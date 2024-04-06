@@ -1,11 +1,9 @@
-import express from "express";
+import { Express } from "express";
 
-const app = express();
+// const indexRouter = require()
+
+const app: Express = require("./src/app");
 const port = 3000;
-
-app.get("/", (req, res) => {
-    res.send("Hello world!");
-});
 
 app.listen(port, () => {
     console.log(`[Server]: Server is listening to http://localhost:${port}`);
