@@ -2,10 +2,10 @@ import { DataTypes } from "sequelize";
 
 const sequelize = require("./db");
 
-const userTable = sequelize.define("Signer", {
+const userTable = sequelize.define("Users", {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    username: DataTypes.STRING,
+    username: { type: DataTypes.STRING, unique: true },
     email: DataTypes.STRING,
     phone: DataTypes.STRING,
     password: DataTypes.STRING
@@ -15,17 +15,20 @@ const userTable = sequelize.define("Signer", {
  * Possible arguments to use during user creation.
  */
 interface UserInputArguments {
+    id?: string;
     firstName?: string;
     lastName?: string;
     username?: string;
     email?: string;
     phone?: string;
+    password?: string;
 }
 
 /**
  * A user.
  */
 export class User {
+    public id!: string | null;
     public firstName!: string | null;
     public lastName!: string | null;
     public username!: string | null;
@@ -42,11 +45,13 @@ export class User {
      * @param args The arguments to use during user creation.
      */
     constructor(args?: UserInputArguments) {
+        this.id = args?.id || null;
         this.firstName = args?.firstName || null;
         this.lastName = args?.lastName || null;
         this.username = args?.username || null;
         this.email = args?.email || null;
         this.phone = args?.phone || null;
+        this.password = args?.password || null;
     }
 
     /**
@@ -79,6 +84,18 @@ export class User {
         return password === this.password;
     }
 
+    public static async getUserByUsername(username: string): Promise<User | null> {
+        const results = await userTable.findAll({
+            where: {
+                username: username
+            }
+        });
+
+        console.log(results.length);
+
+        return results.length > 0 ? new User(results[0]) : null;
+    }
+
     /**
      * Gets a user from the database.
      * 
@@ -91,23 +108,7 @@ export class User {
                 id: id
             }
         });
-        if (results.size == 0) {
-            return null;
-        } else {
-            const resultToUse = results[0];
-            return new User(resultToUse);
-        }
-    }
 
-    /**
-     * Creates a new user and saves it to the database.
-     * 
-     * @param args The arguments to give to user creation.
-     * @returns The new user.
-     */
-    public static async create(args: UserInputArguments): Promise<User> {
-        const newUser = new User(args);
-        newUser.save();
-        return newUser;
+        return results.length > 0 ? new User(results[0]) : null;
     }
 }
