@@ -35,15 +35,22 @@ router.route("/login")
     })
     .post(passport.authenticate("local", { successRedirect: "/", failureRedirect: "/login" }));
 
-router.get("/test", passport.authenticate("session"), (req: any, res: Response) => {
-    // console.log(req);
-    console.log(req.isAuthenticated());
-    if (req.isAuthenticated()) {
-        console.log("authed");
+// router.get("/test", passport.authenticate("session"), (req: any, res: Response) => {
+//     // console.log(req);
+//     console.log(req.isAuthenticated());
+//     if (req.isAuthenticated()) {
+//         console.log("authed");
+//         console.log(req.user);
+//     }
+//     res.send(req.isAuthenticated());
+// });
+
+router.route("/test")
+    .all(passport.authenticate("session"))
+    .get((req: Request, res: Response) => {
         console.log(req.user);
-    }
-    res.send(req.isAuthenticated());
-});
+        res.send(req.user);
+    });
 
 router.get("/logout", passport.authenticate("session"), (req: any, res: Response) => {
     console.log(req.isAuthenticated());

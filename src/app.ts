@@ -29,7 +29,7 @@ app.use("/", indexRouter);
 
 // Load the `auth` routes
 const authRouter = require("./Controller/routes/auth");
-app.use("/", authRouter)
+app.use("/auth", authRouter)
 
 // Export Express app
 module.exports = app;
