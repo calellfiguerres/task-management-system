@@ -4,7 +4,6 @@
   "description": "A system to manage one's tasks and events throughout the day.",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec 'npx ts-node index.ts' --ext 'ts,json'",
     "build": "npx tsc"
   },
