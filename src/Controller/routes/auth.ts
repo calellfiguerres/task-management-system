@@ -56,27 +56,4 @@ router.get("/logout", passport.authenticate("session"), (req: any, res: Response
     });
 });
 
-// router.route("/login")
-//     .get(async (req: Request, res: Response) => {
-//         console.log(await User.userTable.findAll());
-
-//         res.render("auth/login");
-//     })
-//     .post(async (req: Request, res: Response) => {
-//         const u: User | null = await User.getUserByUsername(req.body.username);
-        
-//         if (u == null) {
-//             res.send("User not found");
-//             return;
-//         }
-//         if (!u.checkPassword(req.body.password)) {
-//             res.send("Incorrect password");
-//             return;
-//         }
-
-//         console.log("logged in");
-
-//         res.render("auth/login");
-//     });
-
 module.exports = router;
