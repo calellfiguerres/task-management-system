@@ -3,21 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../partials/bootstrap"); %>
+
     <title>Login</title>
 </head>
 <body>
-    <div>
-        <form action="/login" method="post">
-            <div>
-                <label for="username">Username: </label>
-                <input type="text" name="username" id="username">
+    <%- include("../partials/navbar"); %>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <h1 class="text-right">Welcome Back!</h1>
+                <h3 class="text-right">Let's get you logged in...</h3>
+
+                <form action="" method="post">
+                    <div class="form-floating mb-3">
+                        <input type="text" name="username" id="usernameInput" class="form-control" placeholder="jamal@gmail.com">
+                        <label for="usernameInput">Username</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" name="password" id="passwordInput" class="form-control" placeholder="password">
+                        <label for="passwordInput">Password</label>
+                    </div>
+                    <div class="row justify-content-end">
+                        <!-- <div class="col-3">
+                            <a href="/auth/register" class="btn btn-outline-primary">Register</a>
+                        </div> -->
+                        <div class="col-3">
+                            <button type="submit" class="form-control btn btn-primary">Login</button>
+                        </div>
+                    </div>
+                </form>
+
+                <p class="text-center">New user? <a href="/auth/register">Register now!</a></p>
             </div>
-            <div>
-                <label for="Password">Password: </label>
-                <input type="password" name="password" id="password">
-            </div>
-            <button type="submit">Login</button>
-        </form>
+        </div>
     </div>
+
+    <%- include("../partials/footer"); %>
 </body>
 </html>

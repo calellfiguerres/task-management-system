@@ -3,87 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
-    <link rel="stylesheet" href="/static/CreateTaskStyle.css">
+
+    <%- include("../partials/bootstrap"); %> <!--You might need to change the path to bootstrap-->
+
+    <title>Sign Up</title>
 </head>
 <body>
-    <div class="header">
-        <p>Logo</p>
-        <p>Tasks</p>
-        <p>Events</p>
-        <p>Hello, Subu</p>
-        <p>Sign Out</p>
+    <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <h1 class="text-right">Welcome!</h1>
+                <h3 class="text-right">Let's get you signed up...</h3>
+
+                <form action="" method="post">
+                    <div class="row">
+                        <div class="col">
+                            <!-- First Name -->
+                            <div class="form-floating mb-3">
+                                <input type="text" name="firstName" id="firstNameInput" class="form-control" placeholder="Jamal">
+                                <label for="firstNameInput">First Name</label>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <!-- Last Name -->
+                            <div class="form-floating mb-3">
+                                <input type="text" name="lastName" id="lastNameInput" class="form-control" placeholder="The Otter">
+                                <label for="lastNameInput">Last Name</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-floating mb-3">
+                        <input type="email" name="email" id="emailInput" class="form-control" placeholder="jamal@gmail.com">
+                        <label for="emailInput">Email</label>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-floating mb-3">
+                        <input type="tel" name="phone" id="phoneInput" class="form-control" placeholder="+15555555555">
+                        <label for="phoneInput">Phone</label>
+                    </div>
+
+                    <!-- Username -->
+                    <!-- <div class="form-floating mb-3">
+                        <input type="text" name="username" id="usernameInput" class="form-control" placeholder="jamal">
+                        <label for="usernameInput">First Name</label>
+                    </div> -->
+
+                    <div class="row">
+                        <div class="col">
+                            <!-- Password -->
+                            <div class="form-floating mb-3">
+                                <input type="password" name="password" id="passwordInput" class="form-control" placeholder="password">
+                                <label for="passwordInput">Password</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <!-- Passsword Check -->
+                            <div class="form-floating mb-3">
+                                <input type="password" name="passwordCheck" id="passwordCheckInput" class="form-control" placeholder="password">
+                                <label for="passwordCheckInput">Password Again</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <div class="col-3">
+                            <button type="submit" class="form-control btn btn-primary">Sign Up</button>
+                        </div>
+                    </div>
+                </form>
+
+                <p class="text-center">Already have an account? <a href="/auth/login">Sign In Here!</a></p>
+            </div>
+        </div>
     </div>
-    <div class="titleReg">
-        <h1>Registration</h1>
-    </div>
-    <div class="reguserInput" action="" onsubmit="">
-        <form action="/register" method="POST">
-            <div>
-                <label for="email">First Name:</label>
-                <input 
-                type="text"
-                id="firstName"
-                name="firstName"
-                placeholder=""
-                />
-            </div>
-            <div>
-                <label for="email">Last Name:</label>
-                <input 
-                type="text"
-                id="lastName"
-                name="lastName"
-                placeholder=""
-                />
-            </div>
-            <div>
-                <label for="email">Username:</label>
-                <input 
-                type="text"
-                id="username"
-                name="username"
-                placeholder=""
-                />
-            </div>
-            <div>
-                <label for="email">Password:</label>
-                <input 
-                type="text"
-                id="password"
-                name="password"
-                placeholder=""
-                />
-            </div>
-            <div>
-                <label for="email">Re-enter Password:</label>
-                <input 
-                type="text"
-                id="repassword"
-                name="repassword"
-                placeholder=""
-                />
-            </div>
-            <div>
-                <label for="email">Email:</label>
-                <input 
-                type="text"
-                id="email"
-                name="email"
-                placeholder=""
-                />
-            </div>
-            <div>
-                <label for="email">Phone:</label>
-                <input 
-                type="text"
-                id="phone"
-                name="phone"
-                placeholder=""
-                />
-            </div>
-            <button type="submit" id="create">Register</button>
-        </form>
-    </div>
+
+    <%- include("../partials/footer"); %> <!-- and this too -->
 </body>
 </html>
