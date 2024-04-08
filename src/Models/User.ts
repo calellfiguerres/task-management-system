@@ -84,10 +84,10 @@ export class User {
         return password === this.password;
     }
 
-    public static async getUserByUsername(username: string): Promise<User | null> {
+    public static async getUserByEmail(email: string): Promise<User | null> {
         const results = await userTable.findAll({
             where: {
-                username: username
+                email: email
             }
         });
 

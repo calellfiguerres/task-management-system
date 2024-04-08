@@ -3,8 +3,9 @@ const localStrategy = require("passport-local");
 
 import { User } from "../Models/User";
 
-passport.use(new localStrategy(async (username: any, password: any, cb: any) => {
-    const u: User | null = await User.getUserByUsername(username);
+passport.use(new localStrategy(async (email: any, password: any, cb: any) => {
+    const u: User | null = await User.getUserByEmail(email);
+    console.log(u);
     if (u === null) {
         return cb(null, false);
     }

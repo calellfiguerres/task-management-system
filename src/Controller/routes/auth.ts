@@ -10,14 +10,13 @@ router.route("/register")
         res.render("auth/register");
     })
     .post(async (req: Request, res: Response) => {
-        if (req.body.password !== req.body.repassword) {
+        if (req.body.password !== req.body.passwordCheck) {
             res.send("Passwords must match!");
             return;
         }
         const u: User = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            username: req.body.username,
             email: req.body.email,
             phone: req.body.phone
         });
@@ -26,31 +25,35 @@ router.route("/register")
 
         console.log(u);
 
-        res.render("auth/register");
+        // res.render("auth/register");
+        res.send("Sign up successful!");
     });
 
 router.route("/login")
     .get((req: Request, res: Response) => {
         res.render("auth/login");
     })
-    .post(passport.authenticate("local", { successRedirect: "/", failureRedirect: "/login" }));
-
-// router.get("/test", passport.authenticate("session"), (req: any, res: Response) => {
-//     // console.log(req);
-//     console.log(req.isAuthenticated());
-//     if (req.isAuthenticated()) {
-//         console.log("authed");
-//         console.log(req.user);
-//     }
-//     res.send(req.isAuthenticated());
-// });
+    .post(passport.authenticate("local", { successRedirect: "/", failureRedirect: "/auth/login" }));
 
 router.route("/test")
     .all(passport.authenticate("session"))
     .get((req: Request, res: Response) => {
+        console.log(typeof req);
         console.log(req.user);
         res.send(req.user);
     });
+
+
+router.get("/aslkdj", passport.authenticate("session"), (req: any, res: any) => {
+    if (req.isAuthenticated()) {
+        // is authenticated
+        req.user; // is a User object
+        res.send("asdflkj");
+    } else {
+        req.user; // is undefined
+        res.send("fuck off")
+    }
+});
 
 router.get("/logout", passport.authenticate("session"), (req: any, res: Response) => {
     console.log(req.isAuthenticated());
