@@ -1,4 +1,5 @@
 import { DataTypes } from "sequelize";
+import { IModel } from "./IModel";
 
 const sequelize = require("./db");
 
@@ -27,7 +28,7 @@ interface UserInputArguments {
 /**
  * A user.
  */
-export class User {
+export class User implements IModel {
     public id!: string | null;
     public firstName!: string | null;
     public lastName!: string | null;
