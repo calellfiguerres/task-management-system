@@ -4,7 +4,11 @@ const localStrategy = require("passport-local");
 import { User } from "../Models/User";
 
 passport.use(new localStrategy(async (email: any, password: any, cb: any) => {
-    const u: User | null = await User.getUserByEmail(email);
+    const u: User | null = (await User.findAll({
+        where: {
+            email: email
+        }
+    }))[0];
     console.log(u);
     if (u === null) {
         return cb(null, false);
@@ -23,7 +27,11 @@ passport.serializeUser((user: any, cb: any) => {
 });
 
 passport.deserializeUser(async (user: any, cb: any) => {
-    const u: User | null = await User.getUserByID(user.id);
+    const u: User | null = (await User.findAll({
+        where: {
+            id: user.id
+        }
+    }))[0];
     if (u === null) {
         return cb(new Error("User not found"));
     }

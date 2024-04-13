@@ -1,115 +1,82 @@
-import { DataTypes } from "sequelize";
-import { IModel } from "./IModel";
+import { Table, Column, Model, HasMany, DataType, $GetType } from "sequelize-typescript";
 
-const sequelize = require("./db");
-
-const userTable = sequelize.define("Users", {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    username: { type: DataTypes.STRING, unique: true },
-    email: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    password: DataTypes.STRING
-});
+import { Task } from "./Task";
 
 /**
- * Possible arguments to use during user creation.
+ * A user in the database.
  */
-interface UserInputArguments {
-    id?: string;
-    firstName?: string;
-    lastName?: string;
-    username?: string;
-    email?: string;
-    phone?: string;
-    password?: string;
-}
-
-/**
- * A user.
- */
-export class User implements IModel {
-    public id!: string | null;
-    public firstName!: string | null;
-    public lastName!: string | null;
-    public username!: string | null;
-    public email!: string | null;
-    public phone!: string | null;
-    private password!: string | null;
-
-    public static userTable = userTable;
-    private userTableRef: any;
+@Table
+export class User extends Model {
+    /**
+     * The user's first name.
+     */
+    @Column
+    public firstName?: string;
 
     /**
-     * Creates a new user.
-     * 
-     * @param args The arguments to use during user creation.
+     * The user's last name.
      */
-    constructor(args?: UserInputArguments) {
-        this.id = args?.id || null;
-        this.firstName = args?.firstName || null;
-        this.lastName = args?.lastName || null;
-        this.username = args?.username || null;
-        this.email = args?.email || null;
-        this.phone = args?.phone || null;
-        this.password = args?.password || null;
+    @Column
+    public lastName?: string;
+
+    /**
+     * The user's email.
+     */
+    @Column
+    public email?: string;
+
+    /**
+     * The user's phone number.
+     */
+    @Column
+    public phone?: string;
+
+    /**
+     * The list of tasks this user owns.
+     */
+    @HasMany(() => Task)
+    public ownedTasks?: Task[];
+
+    /**
+     * Gets the list of tasks this user owns.
+     * 
+     * @returns The list of tasks this user owns.
+     */
+    public async getTasks(): Promise<$GetType<this["ownedTasks"]>> {
+        return await this.$get("ownedTasks");
     }
 
     /**
-     * Saves the user to the database.
+     * Adds the given task to the list of tasks this user owns.
+     * 
+     * @param t The task to add.
      */
-    public async save() {
-        if (this.userTableRef == null) {
-            this.userTableRef = await userTable.create(this);
-        } else {
-            await this.userTableRef.set(this);
-        }
+    public async addTask(t: Task): Promise<void> {
+        this.$add("ownedTasks", t);
     }
 
     /**
-     * Sets the user's password.
+     * The user's password.
+     */
+    @Column
+    private password?: string;
+
+    /**
+     * Sets the user's password to the new `password`.
      * 
-     * @param password The new password for the user.
+     * @param password The new password to use.
      */
     public setPassword(password: string): void {
         this.password = password;
     }
 
     /**
-     * Checks if a given password matches the user's password.
+     * Checks whether a given password is the user's password.
      * 
      * @param password The password to check.
-     * @returns Whether the provided password was correct.
+     * @returns Whether the provided `password` is correct.
      */
     public checkPassword(password: string): boolean {
-        return password === this.password;
-    }
-
-    public static async getUserByEmail(email: string): Promise<User | null> {
-        const results = await userTable.findAll({
-            where: {
-                email: email
-            }
-        });
-
-        console.log(results.length);
-
-        return results.length > 0 ? new User(results[0]) : null;
-    }
-
-    /**
-     * Gets a user from the database.
-     * 
-     * @param id The `ID` of the user to get.
-     * @returns The user with the given `ID`, or null if they don't exist.
-     */
-    public static async getUserByID(id: number): Promise<User | null> {
-        const results = await userTable.findAll({
-            where: {
-                id: id
-            }
-        });
-
-        return results.length > 0 ? new User(results[0]) : null;
+        return this.password === password;
     }
 }

@@ -1,6 +1,11 @@
-const { Sequelize } = require("sequelize");
+import { Sequelize } from "sequelize-typescript";
 
-const sequelize = new Sequelize("sqlite://app.db");
+import { User } from "./User";
+import { Task } from "./Task";
+
+const sequelize: Sequelize = new Sequelize("sqlite://app.db");
+
+sequelize.addModels([ User, Task ]);
 
 sequelize.sync({ force: true });
 

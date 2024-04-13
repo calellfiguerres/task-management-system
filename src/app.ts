@@ -1,9 +1,13 @@
 import express, { Express } from "express";
+import { Sequelize } from "sequelize-typescript";
 const bodyParser = require("body-parser");
 const session = require("express-session");
 
 // Create the Express app
 const app: Express = express();
+
+// Initialize the database
+const sequelize: Sequelize = require("./Models/db");
 
 // Set the view engine to EJS and which directory it search for templates
 app.set("view engine", "ejs");
@@ -30,6 +34,10 @@ app.use("/", indexRouter);
 // Load the `auth` routes
 const authRouter = require("./Controller/routes/auth");
 app.use("/auth", authRouter)
+
+// Load the `tasks` routes
+const tasksRouter = require("./Controller/routes/tasks");
+app.use("/tasks", tasksRouter)
 
 // Export Express app
 module.exports = app;

@@ -44,18 +44,18 @@ router.route("/test")
     });
 
 
-router.get("/aslkdj", passport.authenticate("session"), (req: any, res: any) => {
+router.get("/aslkdj", passport.authenticate("session"), (req: Request, res: Response) => {
     if (req.isAuthenticated()) {
         // is authenticated
         req.user; // is a User object
         res.send("asdflkj");
     } else {
         req.user; // is undefined
-        res.send("fuck off")
+        res.send("go away")
     }
 });
 
-router.get("/logout", passport.authenticate("session"), (req: any, res: Response) => {
+router.get("/logout", passport.authenticate("session"), (req: Request, res: Response) => {
     console.log(req.isAuthenticated());
     // console.log(req);
     req.logout((err: any) => {
