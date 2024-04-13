@@ -56,6 +56,16 @@ export class User extends Model {
     }
 
     /**
+     * Checks whether the calling `user` owns the given `task`.
+     * 
+     * @param task The task to check.
+     * @returns Whether the user owns the given `task`.
+     */
+    public ownsTask(task: Task): boolean {
+        return this.id == task.taskOwnerId;
+    }
+
+    /**
      * The list of events this user owns.
      */
     @HasMany(() => Task)

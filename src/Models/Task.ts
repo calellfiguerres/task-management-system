@@ -74,7 +74,7 @@ export class Task extends Model {
      */
     @ForeignKey(() => User)
     @Column
-    private taskOwnerId?: number;
+    public taskOwnerId?: number;
 
     /**
      * The owner of this task.
