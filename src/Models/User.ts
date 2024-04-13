@@ -1,6 +1,6 @@
 import { Table, Column, Model, HasMany, DataType, $GetType } from "sequelize-typescript";
-
 import { Task } from "./Task";
+import { Event } from "./Event";
 
 /**
  * A user in the database.
@@ -52,7 +52,21 @@ export class User extends Model {
      * @param t The task to add.
      */
     public async addTask(t: Task): Promise<void> {
-        this.$add("ownedTasks", t);
+        await this.$add("ownedTasks", t);
+    }
+
+    /**
+     * The list of events this user owns.
+     */
+    @HasMany(() => Task)
+    public ownedEvents?: Event[];
+
+    public async getEvents(): Promise<$GetType<this["ownedEvents"]>> {
+        return await this.$get("ownedEvents");
+    }
+
+    public async addEvent(e: Event): Promise<void> {
+        await this.$add("ownedEvents", e);
     }
 
     /**

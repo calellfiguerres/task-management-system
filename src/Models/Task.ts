@@ -1,5 +1,4 @@
-import { Table, Column, Model, HasMany, DataType, BelongsTo, ForeignKey } from "sequelize-typescript";
-
+import { BelongsTo, Column, ForeignKey, Model, Table } from "sequelize-typescript";
 import { User } from './User';
 
 /**
@@ -32,7 +31,7 @@ export class Task extends Model {
     public dueDate?: Date;
 
     /**
-     * The `ID` of the owner who owns this task.
+     * The `ID` of the user who owns this task.
      */
     @ForeignKey(() => User)
     @Column
