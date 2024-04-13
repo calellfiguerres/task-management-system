@@ -7,7 +7,7 @@ const session = require("express-session");
 const app: Express = express();
 
 // Initialize the database
-const sequelize: Sequelize = require("./Models/db");
+const sequelize: Sequelize = require("./Controller/databaseController");
 
 // Set the view engine to EJS and which directory it search for templates
 app.set("view engine", "ejs");
