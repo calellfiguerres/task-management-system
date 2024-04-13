@@ -3,39 +3,32 @@ import passport from "passport";
 import { Task } from "../../Models/Task";
 import { User } from "../../Models/User";
 import { TaskPriority } from "../../Models/TaskPriority";
-import { Sequelize } from "sequelize-typescript";
 
 const router: Router = express.Router();
-
-// /tasks/ -> view your tasks
-// /tasks/new -> create a nre task
 
 router.get("/", passport.authenticate("session"), async (req: Request, res: Response) => {
     if (req.isAuthenticated() && req.user instanceof User) { // User IS authenticated
 
-        let taskList: Task[] = [];
-        
-        if (req.query.sort == "priority") {
-            taskList = await Task.findAll({
-                where: {
-                    taskOwnerId: req.user.id
-                },
-                order: [
-                    ["priority", "DESC"]
-                ]
-            });
-        } else {
-            taskList = await Task.findAll({
-                where: {
-                    taskOwnerId: req.user.id
-                },
-                order: [
-                    ["dueDate", "ASC"]
-                ]
-            });
-        }
+        const taskList: Task[] = await Task.findAll({
+            where: {
+                taskOwnerId: req.user.id
+            },
+            order: [
+                req.query.sort == "priority" ? ["priority", "DESC"] : ["dueDate", "ASC"]
+            ]
+        });
 
-        res.render('tasks/viewtasks', {tasks: taskList})
+        const overdueTasks: Task[] = [];
+        const tasks: Task[] = [];
+        taskList.forEach((task) => {
+            if (task.isOverdue()) {
+                overdueTasks.push(task);
+            } else {
+                tasks.push(task);
+            }
+        });
+
+        res.render('tasks/viewtasks', {overdueTasks: overdueTasks, tasks: tasks})
 
 
     } else { // Someone not authenticated and trying to skip login
@@ -43,43 +36,7 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
     }
 });
 
-router.get("/newtask0", passport.authenticate("session"), async (req: Request, res: Response) => {
-    if (req.isAuthenticated()) {
-        const t: Task = await Task.create({
-            name: "test task",
-            description: "test task description",
-            dueDate: new Date(),
-            priority: TaskPriority.LOW
-        });
-        
-        if (req.user instanceof User) {
-            req.user.addTask(t);
-        }
-        res.send("success!");
-    } else {
-        res.send("Hello from tasks!");
-    }
-});
-
-router.get("/newtask1", passport.authenticate("session"), async (req: Request, res: Response) => {
-    if (req.isAuthenticated()) {
-        const t: Task = await Task.create({
-            name: "test task",
-            description: "test task description",
-            dueDate: new Date(),
-            priority: TaskPriority.MEDIUM
-        });
-        
-        if (req.user instanceof User) {
-            req.user.addTask(t);
-        }
-        res.send("success!");
-    } else {
-        res.send("Hello from tasks!");
-    }
-});
-
-router.get("/newtask2", passport.authenticate("session"), async (req: Request, res: Response) => {
+router.get("/new", passport.authenticate("session"), async (req: Request, res: Response) => {
     if (req.isAuthenticated()) {
         const t: Task = await Task.create({
             name: "test task",
@@ -93,10 +50,20 @@ router.get("/newtask2", passport.authenticate("session"), async (req: Request, r
         }
         res.send("success!");
     } else {
-        res.send("Hello from tasks!");
+        res.redirect("/auth/login")
     }
 });
 
-router.get("/")
+router.get("/:taskId/complete", passport.authenticate("session"), async (req: Request, res: Response) => {
+    res.send(req.params.taskId);
+});
+
+router.get("/:taskId/edit", passport.authenticate("session"), async (req: Request, res: Response) => {
+    res.send(req.params.taskId);
+});
+
+router.get("/:taskId/delete", passport.authenticate("session"), async (req: Request, res: Response) => {
+    res.send(req.params.taskId);
+});
 
 module.exports = router;

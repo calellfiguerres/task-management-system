@@ -1,6 +1,11 @@
 import { BelongsTo, Column, ForeignKey, Model, Table } from "sequelize-typescript";
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
+
 import { User } from './User';
 import { TaskPriority } from "./TaskPriority";
+
+dayjs.extend(relativeTime) // use plugin
 
 /**
  * A task that a user can have.
@@ -30,6 +35,33 @@ export class Task extends Model {
      */
     @Column
     public dueDate?: Date;
+
+    /**
+     * Formats the due date into a user friendy string.
+     * 
+     * @returns The due date as a formatted string.
+     */
+    public formattedDueDate(): string {
+        // const currDate: Date = new Date();
+        // if ((this.dueDate !=  null) && (Math.abs(this.dueDate.getMilliseconds() - currDate.getMilliseconds()) > 72 * 3600)) {
+        //     return dayjs(this.dueDate).fromNow().toString();
+        // } else {
+            return dayjs(this.dueDate).format("MMMM D, YYYY h:mm A");
+        // }
+    }
+
+    /**
+     * Determines whether the task is overdue.
+     * 
+     * @returns Whether the task is overdue.
+     */
+    public isOverdue(): boolean | null {
+        if (this.dueDate != null) {
+            return (new Date()) > this.dueDate;
+        } else {
+            return null;
+        }
+    }
 
     /**
      * The task's priority

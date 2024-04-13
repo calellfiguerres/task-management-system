@@ -14,29 +14,78 @@
     
     <div class="container mt-5">
         <h1>Task List</h1>
-        <div class="mb-3">
-            <form action="" method="get">
-                <label for="sortSelect" class="form-label">Sort By:</label>
-                <select class="form-select" name="sort" id="sortSelect">
-                    <option value="dueDate">Due Date</option>
-                    <option value="priority">Priority</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Sort</button>
-            </form>
+        <div class="row">
+            <div class="col-9">
+                <a href="/tasks/new" type="button" class="btn btn-primary">New Task</a>
+            </div>
+            <div class="col-3 justify-content-end">
+                <form action="" method="get">
+                    <div class="input-group">
+                        <select name="sort" id="sort" class="form-select">
+                            <option value="dueDate">Due Date</option>
+                            <option value="priority">Priority</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Sort</button>
+                    </div>
+                </form>
+            </div>
         </div>
+        <% if (overdueTasks.length > 0) { %>
+            <h2 class="mt-3">Overdue Tasks</h2>
+            <div class="list-group mt-3">
+                <% overdueTasks.forEach((task) => { %>
+                    <div class="list-group-item priority-<%= task.priority %>">
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="mb-1"><%= task.name %></h5>
+                                <p class="mb-1"><%= task.description %></p>
+                            </div>
+                            <div class="col-3">
+                                <small><strong>Due: </strong><%= task.formattedDueDate() %></small>
+                            </div>
+                            <div class="col-3">
+                                <a href="/tasks/<%= task.id %>/complete" class="btn btn-success">Complete</a>
+                                <a href="/tasks/<%= task.id %>/edit" class="btn btn-primary">Edit</a>
+                                <% if (task.priority == 2) { %>
+                                    <a href="/tasks/<%= task.id %>/delete" class="btn btn-dark">Delete</a>
+                                <% } else { %>
+                                    <a href="/tasks/<%= task.id %>/delete" class="btn btn-danger">Delete</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+            <hr>
+            <h2>Pending Tasks</h2>
+        <% } %>
         <% if (tasks.length > 0) { %>
-            <div class="list-group">
+            <div class="list-group mt-3">
                 <% tasks.forEach(function(task) { %>
                     <div class="list-group-item priority-<%= task.priority %>">
-                        <h5 class="mb-1"><%= task.name %></h5>
-                        <p class="mb-1"><%= task.description %></p>
-                        <small><%= task.dueDate %></small>
-                        <button class="btn btn-primary float-right" onclick="markAsDone('<%= task._id %>')">Mark as Done</button>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="mb-1"><%= task.name %></h5>
+                                <p class="mb-1"><%= task.description %></p>
+                            </div>
+                            <div class="col-3">
+                                <small><strong>Due: </strong><%= task.formattedDueDate() %></small>
+                            </div>
+                            <div class="col-3">
+                                <a href="/tasks/<%= task.id %>/complete" class="btn btn-success">Complete</a>
+                                <a href="/tasks/<%= task.id %>/edit" class="btn btn-primary">Edit</a>
+                                <% if (task.priority == 2) { %>
+                                    <a href="/tasks/<%= task.id %>/delete" class="btn btn-dark">Delete</a>
+                                <% } else { %>
+                                    <a href="/tasks/<%= task.id %>/delete" class="btn btn-danger">Delete</a>
+                                <% } %>
+                            </div>
+                        </div>
                     </div>
-                <% }) %>
+                <% }); %>
             </div>
         <% } else { %>
-            <p>No tasks available.</p>
+            <p class="mt-3">No tasks available.</p>
         <% } %>
     </div>
     <%- include("../partials/footer"); %> <!-- and this too -->
