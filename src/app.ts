@@ -39,5 +39,8 @@ app.use("/auth", authRouter)
 const tasksRouter = require("./Controller/routes/tasks");
 app.use("/tasks", tasksRouter)
 
+// Load the `admin` routes
+app.use("/admin", require("./Controller/routes/admin"));
+
 // Export Express app
 module.exports = app;

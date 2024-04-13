@@ -36,7 +36,7 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
         }
     });
 
-    res.render('tasks/viewtasks', {overdueTasks: overdueTasks, tasks: tasks})
+    res.render('tasks/viewtasks', {overdueTasks: overdueTasks, tasks: tasks, isAuthenticated: req.isAuthenticated(), user: req.user})
 });
 
 router.get("/new", passport.authenticate("session"), async (req: Request, res: Response) => {

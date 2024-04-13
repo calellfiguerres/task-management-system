@@ -9,7 +9,6 @@ passport.use(new localStrategy(async (email: any, password: any, cb: any) => {
             email: email
         }
     }))[0];
-    console.log(u);
     if (u === null) {
         return cb(null, false);
     }
