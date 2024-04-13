@@ -32,6 +32,18 @@ export class User extends Model {
     public phone?: string;
 
     /**
+     * Whether the account is active.
+     */
+    @Column
+    public active?: boolean;
+
+    /**
+     * Whether the user is an admin.
+     */
+    @Column
+    public administrator?: boolean;
+
+    /**
      * The list of tasks this user owns.
      */
     @HasMany(() => Task)
