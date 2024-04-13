@@ -26,14 +26,14 @@ router.route("/register")
         console.log(u);
 
         // res.render("auth/register");
-        res.send("Sign up successful!");
+        res.redirect("/auth/login");
     });
 
 router.route("/login")
     .get((req: Request, res: Response) => {
         res.render("auth/login");
     })
-    .post(passport.authenticate("local", { successRedirect: "/", failureRedirect: "/auth/login" }));
+    .post(passport.authenticate("local", { successRedirect: "/tasks/", failureRedirect: "/auth/login" }));
 
 router.route("/test")
     .all(passport.authenticate("session"))

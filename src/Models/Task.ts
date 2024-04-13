@@ -1,5 +1,6 @@
 import { BelongsTo, Column, ForeignKey, Model, Table } from "sequelize-typescript";
 import { User } from './User';
+import { TaskPriority } from "./TaskPriority";
 
 /**
  * A task that a user can have.
@@ -29,6 +30,12 @@ export class Task extends Model {
      */
     @Column
     public dueDate?: Date;
+
+    /**
+     * The task's priority
+     */
+    @Column
+    public priority?: TaskPriority;
 
     /**
      * The `ID` of the user who owns this task.

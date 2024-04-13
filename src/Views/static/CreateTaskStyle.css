@@ -41,3 +41,11 @@
     font-weight: 600;
     outline-style: solid;
 }
+
+.priority-0 { background-color: whitesmoke; }
+.priority-1 { background-color: #FFC000; }
+.priority-2 { background-color: #E32636; color: white; }
+
+/* .priority-2 */
+/*#E32636*/
+/* #E31837 */

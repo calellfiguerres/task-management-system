@@ -8,6 +8,6 @@ const sequelize: Sequelize = new Sequelize("sqlite://app.db");
 
 sequelize.addModels([ User, Task, Event ]);
 
-sequelize.sync({ force: true });
+sequelize.sync({ force: false });
 
 module.exports = sequelize;
