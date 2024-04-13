@@ -20,6 +20,12 @@ export class Task extends Model {
     public description?: string;
 
     /**
+     * Whether the task is completed (or not).
+     */
+    @Column
+    public completed?: boolean;
+
+    /**
      * The task's due date.
      */
     @Column

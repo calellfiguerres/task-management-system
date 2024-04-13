@@ -5,9 +5,16 @@ import { User } from "../../Models/User";
 
 const router: Router = express.Router();
 
+// /tasks/ -> view your tasks
+// /tasks/new -> create a nre task
+
 router.get("/", passport.authenticate("session"), async (req: Request, res: Response) => {
-    if (req.isAuthenticated() && req.user instanceof User) {
-        res.send(await req.user.getTasks());
+    if (req.isAuthenticated() && req.user instanceof User) { // User IS authenticated
+        res.render('tasks/viewtasks', {tasks: await req.user.getTasks()})
+
+
+    } else { // Someone not authenticated and trying to skip login
+        res.redirect('/auth/login');
     }
 });
 
@@ -26,5 +33,7 @@ router.get("/newtask", passport.authenticate("session"), async (req: Request, re
         res.send("Hello from tasks!");
     }
 });
+
+router.get("/")
 
 module.exports = router;

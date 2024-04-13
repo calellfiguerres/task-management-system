@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../partials/bootstrap"); %> <!--You might need to change the path to bootstrap-->
+
+    <title>Your Tasks</title>
+</head>
+<body>
+    <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
+    
+    <h1>Your Tasks:</h1>
+    <% for (task of tasks) {%>
+        <p><%= task.name %></p>
+    <% } %>
+    <%- include("../partials/footer"); %> <!-- and this too -->
+</body>
+</html>
