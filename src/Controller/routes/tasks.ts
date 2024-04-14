@@ -36,27 +36,45 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
         }
     });
 
-    res.render('tasks/viewtasks', {overdueTasks: overdueTasks, tasks: tasks, isAuthenticated: req.isAuthenticated(), user: req.user})
+    res.render('tasks/viewtasks', {overdueTasks: overdueTasks, tasks: tasks, sort: req.query.sort, isAuthenticated: req.isAuthenticated(), user: req.user})
 });
 
-router.get("/new", passport.authenticate("session"), async (req: Request, res: Response) => {
-    if (!req.isAuthenticated()) {
-        res.redirect("/auth/login");
-        return;
-    }
-
-    const t: Task = await Task.create({
-        name: "test task",
-        description: "test task description",
-        dueDate: new Date(),
-        priority: TaskPriority.HIGH
+router.route("/new")
+    .all(passport.authenticate("session"))
+    .get(async (req: Request, res: Response) => {
+        if (!req.isAuthenticated()) {
+            res.redirect("/auth/login");
+            return;
+        }
+        res.render("tasks/newtask", {isAuthenticated: req.isAuthenticated(), user: req.user});
+    })
+    .post(async (req: Request, res: Response) => {
+        // console.log(req.body);
+        if (!req.isAuthenticated()) {
+            res.redirect("/auth/login");
+            return;
+        }
+        if (req.body.name.length > 255){
+            res.send("Your task name was way too long!");
+            return;
+        }
+        if (req.body.description.length > 255){
+            res.send("Your task description was too long");
+            return;
+        }
+        const convertedDate: Date = new Date(req.body.dueDate);
+        if (convertedDate.toString() == "Invalid Date") {
+            res.send("Your date is invalid");
+        }
+        const t: Task = await Task.create({
+            name: req.body.name,
+            description: req.body.description,
+            dueDate: convertedDate,
+            priority: req.body.priority
+        });
+        (req.user as User).addTask(t);
+        res.redirect("/tasks");
     });
-    
-    if (req.user instanceof User) {
-        req.user.addTask(t);
-    }
-    res.send("success!");
-});
 
 router.get("/:taskId/complete", passport.authenticate("session"), async (req: Request, res: Response) => {
     if (!req.isAuthenticated()) {

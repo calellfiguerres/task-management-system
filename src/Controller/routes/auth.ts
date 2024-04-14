@@ -1,11 +1,13 @@
 import express, { Router, Request, Response } from "express";
 
 import { User } from "../../Models/User";
-const passport = require("../authController");
+// import passport from "passport";
+const passport = require("./../authController");
 
 const router: Router = express.Router();
 
 router.route("/register")
+    .all(passport.authenticate("session"))
     .get((req: Request, res: Response) => {
         res.render("auth/register", { isAuthenticated: req.isAuthenticated(), user: req.user });
     })
