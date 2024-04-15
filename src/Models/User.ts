@@ -68,6 +68,15 @@ export class User extends Model {
     }
 
     /**
+     * Removes the given task from the list of tasks this user owns.
+     * 
+     * @param t The task to remove.
+     */
+    public async removeTask(t: Task): Promise<void> {
+        await this.$remove("ownedTasks", t);
+    }
+
+    /**
      * Checks whether the calling `user` owns the given `task`.
      * 
      * @param task The task to check.

@@ -24,19 +24,30 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
         order: [
             req.query.sort == "priority" ? ["priority", "DESC"] : ["dueDate", "ASC"]
         ]
-    });    
+    });
 
     const overdueTasks: Task[] = [];
+    const completedTasks: Task[] = [];
     const tasks: Task[] = [];
     taskList.forEach((task) => {
+        // console.log(task.toJSON());
         if (task.isOverdue()) {
             overdueTasks.push(task);
+        } else if (task.completed == true) {
+            completedTasks.push(task);
         } else {
             tasks.push(task);
         }
     });
 
-    res.render('tasks/viewtasks', {overdueTasks: overdueTasks, tasks: tasks, sort: req.query.sort, isAuthenticated: req.isAuthenticated(), user: req.user})
+    res.render('tasks/viewtasks', {
+        overdueTasks: overdueTasks,
+        completedTasks: completedTasks,
+        tasks: tasks,
+        sort: req.query.sort,
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user
+    });
 });
 
 router.route("/new")
@@ -95,7 +106,35 @@ router.get("/:taskId/complete", passport.authenticate("session"), async (req: Re
         return;
     }
 
-    // complete the task.
+    task.completed = true;
+    await task.save();
+
+    res.redirect("/tasks");
+});
+
+router.get("/:taskId/incomplete", passport.authenticate("session"), async (req: Request, res: Response) => {
+    if (!req.isAuthenticated()) {
+        res.redirect("/auth/login");
+        return;
+    }
+
+    if (!(req.user instanceof User)) {
+        res.sendStatus(500);
+        return;
+    }
+
+    const user: User = req.user;
+    const task: Task = (await Task.findAll({where:{id:req.params.taskId}}))[0];
+    
+    if (!user.ownsTask(task)) {
+        res.status(404).send("not found")
+        return;
+    }
+
+    task.completed = false;
+    await task.save();
+
+    res.redirect("/tasks");
 });
 
 router.get("/:taskId/edit", passport.authenticate("session"), async (req: Request, res: Response) => {
@@ -103,7 +142,30 @@ router.get("/:taskId/edit", passport.authenticate("session"), async (req: Reques
 });
 
 router.get("/:taskId/delete", passport.authenticate("session"), async (req: Request, res: Response) => {
-    res.send(req.params.taskId);
+    if (!req.isAuthenticated()) {
+        res.redirect("/auth/login");
+        return;
+    }
+
+    if (!(req.user instanceof User)) {
+        res.sendStatus(500);
+        return;
+    }
+
+    const user: User = req.user;
+    const task: Task = (await Task.findAll({where:{id:req.params.taskId}}))[0];
+    
+    if (!user.ownsTask(task)) {
+        res.status(404).send("not found")
+        return;
+    }
+
+    await Promise.all([
+        user.removeTask(task),
+        task.destroy()
+    ]);
+
+    res.redirect("/tasks");
 });
 
 module.exports = router;

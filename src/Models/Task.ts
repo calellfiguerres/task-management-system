@@ -57,7 +57,7 @@ export class Task extends Model {
      */
     public isOverdue(): boolean | null {
         if (this.dueDate != null) {
-            return (new Date()) > this.dueDate;
+            return !this.completed && (new Date()) > this.dueDate;
         } else {
             return null;
         }
