@@ -9,7 +9,7 @@ passport.use(new localStrategy(async (email: any, password: any, cb: any) => {
             email: email
         }
     }))[0];
-    if (u === null) {
+    if (u == null) {
         return cb(null, false);
     }
     if (!u.checkPassword(password)) {
