@@ -1,7 +1,8 @@
-const passport = require("passport");
-const localStrategy = require("passport-local");
-
+import { PassportStatic } from "passport";
 import { User } from "../Models/User";
+
+const passport: PassportStatic = require("passport");
+const localStrategy = require("passport-local");
 
 passport.use(new localStrategy(async (email: any, password: any, cb: any) => {
     const u: User | null = (await User.findAll({

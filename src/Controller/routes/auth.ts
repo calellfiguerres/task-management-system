@@ -1,8 +1,9 @@
 import express, { Router, Request, Response } from "express";
 
 import { User } from "../../Models/User";
+import { PassportStatic } from "passport";
 // import passport from "passport";
-const passport = require("./../authController");
+const passport: PassportStatic = require("./../authController");
 
 const router: Router = express.Router();
 
