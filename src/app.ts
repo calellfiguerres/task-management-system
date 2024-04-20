@@ -39,6 +39,10 @@ app.use("/auth", authRouter)
 const tasksRouter = require("./Controller/routes/tasks");
 app.use("/tasks", tasksRouter)
 
+// Load the `events` routes
+const eventsRouter = require("./Controller/routes/events");
+app.use("/events", eventsRouter);
+
 // Load the `admin` routes
 app.use("/admin", require("./Controller/routes/admin"));
 
