@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../partials/bootstrap"); %> <!--You might need to change the path to bootstrap-->
+
+    <title>Edit Task</title>
+</head>
+<body>
+    <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
+    
+    <div class="container mt-5">
+        <h1>Edit Task</h1>
+        <form action="" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required value = <%= task.name%>>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required value = <%= task.description%>></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dueDate">Due Date:</label>
+                <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" required value = <%= task.dueDate%>>
+            </div>
+            <div class="form-group">
+                <label for="priority">Priority:</label>
+                <select class="form-control" id="priority" name="priority" required value = <%= task.priority%>>
+                    <option value="0">Low</option>
+                    <option value="1">Medium</option>
+                    <option value="2">High</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <%- include("../partials/footer"); %> <!-- and this too -->
+</body>
+</html>
