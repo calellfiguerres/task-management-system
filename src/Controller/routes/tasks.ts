@@ -4,6 +4,18 @@ import { Task } from "../../Models/Task";
 import { User } from "../../Models/User";
 import { TaskPriority } from "../../Models/TaskPriority";
 
+function convertToUTC(date: Date): Date {
+    return new Date(Date.UTC(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate(),
+        date.getUTCHours(),
+        date.getUTCMinutes(),
+        date.getUTCSeconds(),
+        date.getUTCMilliseconds()
+    ));
+}
+
 const router: Router = express.Router();
 
 router.get("/", passport.authenticate("session"), async (req: Request, res: Response) => {
@@ -25,6 +37,10 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
             req.query.sort == "priority" ? ["priority", "DESC"] : ["dueDate", "ASC"]
         ]
     });
+
+    taskList.forEach((t) => {
+        console.log(t.name, t.dueDate);
+    })
 
     const overdueTasks: Task[] = [];
     const completedTasks: Task[] = [];
@@ -78,10 +94,16 @@ router.route("/new")
             res.send("Your date is invalid");
             return;
         }
+
+        // convertedDate.setMinutes(convertedDate.getMinutes() - convertedDate.getTimezoneOffset());
+        // const utcDate: Date = Date.UTC(convertedDate.toUTCString())
+        const utcDate: Date = convertToUTC(convertedDate);
+        console.log(utcDate);
+
         const t: Task = await Task.create({
             name: req.body.name,
             description: req.body.description,
-            dueDate: convertedDate,
+            dueDate: utcDate,
             priority: req.body.priority
         });
         (req.user as User).addTask(t);
@@ -157,10 +179,18 @@ router.get("/:taskId/edit", passport.authenticate("session"), async (req: Reques
         return;
     }
 
+    let date: Date | null = null;
+    if (task.dueDate != null) {
+        date = new Date(task.dueDate?.getTime());
+        date.setMinutes(task.dueDate.getMinutes() - task.dueDate.getTimezoneOffset());
+    }
+
+
     res.render('tasks/edit', {
         task: task,
         isAuthenticated: req.isAuthenticated(),
-        user: req.user
+        user: req.user,
+        dateFillIn: date != null ? date.toISOString().slice(0,16) : false
     });
 });
 
@@ -194,6 +224,7 @@ router.post("/:taskId/edit", passport.authenticate("session"), async (req: Reque
     task.name = req.body.name;
     task.description = req.body.description;
     task.dueDate = req.body.dueDate;
+    task.priority = req.body.priority;
 
     await task.save()
 
