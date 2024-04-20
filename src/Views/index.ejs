@@ -8,9 +8,37 @@
 
     <script src="/static/test.js"></script>
 
-    <title>Hello World!</title>
+    <link href="static/welcome.css" rel="stylesheet" media="all">
+
+    <title>Welcome</title>
 </head>
 <body>
-    <p><%= test %></p>
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">Welcome to Jamal Time!</h2>
+                        <div class="about">
+                            <p style="padding-bottom: 10px;">Hello!</p>
+                            <p style="padding-bottom: 10px;">Thank you for trying us out! Jamal Time is here to help you stay organized. Stay on top of your work by creating tasks. Never miss an event ever again using our calender!</p>
+                            <p>Ready to Start?</p>
+                        </div>
+                    <div class="p-t-15">
+                        <button class="btn btn--radius-2 btn--blue" type="submit">LETS GO!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/datepicker/moment.min.js"></script>
+    <script src="vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="js/global.js"></script>
 </body>
 </html>
