@@ -2,6 +2,8 @@ import express, { Express } from "express";
 import { Sequelize } from "sequelize-typescript";
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const flash = require("connect-flash");
 
 // Create the Express app
 const app: Express = express();
@@ -20,6 +22,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: { secure: false }
 }));
+app.use(cookieParser("this is another very secret thing"));
+app.use(flash());
 
 // Body parser for forms
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -10,6 +10,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/connect-flash": "^0.0.40",
+    "@types/cookie-parser": "^1.4.7",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.6",
     "dayjs": "^1.11.10",
     "ejs": "^3.1.9",
     "express": "^4.19.2",

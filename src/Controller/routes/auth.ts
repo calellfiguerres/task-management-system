@@ -2,7 +2,7 @@ import express, { Router, Request, Response } from "express";
 
 import { User } from "../../Models/User";
 import { PassportStatic } from "passport";
-// import passport from "passport";
+import { FlashMessageType } from "../FlashMessageType";
 const passport: PassportStatic = require("./../authController");
 
 const router: Router = express.Router();
@@ -10,11 +10,17 @@ const router: Router = express.Router();
 router.route("/register")
     .all(passport.authenticate("session"))
     .get((req: Request, res: Response) => {
-        res.render("auth/register", { isAuthenticated: req.isAuthenticated(), user: req.user });
+        res.render("auth/register", {
+            messages: req.flash(),
+            isAuthenticated: req.isAuthenticated(),
+            user: req.user
+        });
     })
     .post(async (req: Request, res: Response) => {
         if (req.body.password !== req.body.passwordCheck) {
-            res.send("Passwords must match!");
+            // res.send("Passwords must match!");
+            req.flash(FlashMessageType.DANGER, "Passwords must match!");
+            res.redirect("/auth/register");
             return;
         }
         const u: User = new User({
@@ -27,6 +33,7 @@ router.route("/register")
         });
         u.setPassword(req.body.password);
         u.save();
+        req.flash(FlashMessageType.INFO, "Registration Successful!");
         res.redirect("/auth/login");
     });
 
@@ -37,7 +44,11 @@ router.route("/login")
             res.redirect("/tasks");
             return;
         }
-        res.render("auth/login", { isAuthenticated: req.isAuthenticated(), user: req.user });
+        res.render("auth/login", {
+            messages: req.flash(),
+            isAuthenticated: req.isAuthenticated(),
+            user: req.user
+        });
     })
     .post(passport.authenticate("local", { successRedirect: "/tasks/", failureRedirect: "/auth/login" }));
 
@@ -46,6 +57,7 @@ router.get("/logout", passport.authenticate("session"), (req: Request, res: Resp
         if (err) {
 
         }
+        req.flash(FlashMessageType.INFO, "Logout successful!")
         res.redirect("/auth/login");
     });
 });
