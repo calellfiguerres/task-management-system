@@ -12,6 +12,7 @@
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
     
     <div class="container mt-5">
+        <a href="/admin/" class="btn btn-outline-secondary mb-2">Back</a>
         <% if (userToView) { %>
             <h1><strong><u>Viewing:</u> </strong><%= userToView.firstName %> <%= userToView.lastName %></h1>
             <fieldset class="mt-4" disabled>
@@ -20,7 +21,7 @@
                     <input type="text" name="id" id="idInput" class="form-control" placeholder="0" value="<%= userToView.id %>" disabled>
                     <label for="idInput">User ID</label>
                 </div>
-                
+
                 <div class="row">
                     <div class="col">
                         <!-- First Name -->
@@ -66,7 +67,7 @@
 
             <div class="row justify-content-between">
                 <div class="col-3">
-                    <a href="/admin/users/<%= userToView.id %>/edit" class="btn btn-primary">Edit User</a>
+                    <a href="/admin/users/<%= userToView.id %>/edit" class="btn btn-primary">Edit User Profile</a>
                 </div>
                 <div class="col-4">
                     <div class="float-end">

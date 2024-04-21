@@ -12,6 +12,7 @@
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
     
     <div class="container mt-5">
+        <a href="/admin/users/<%= userToView.id %>/" class="btn btn-outline-secondary mb-2">Back</a>
         <% if (userToView) { %>
             <h1><strong><u>Editing:</u> </strong><%= userToView.firstName %> <%= userToView.lastName %></h1>
             <form action="" method="post">
@@ -66,7 +67,7 @@
 
                     <div class="float-end">
                         <a href="/admin/users/<%= userToView.id %>" class="btn btn-outline-primary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Submit Changes</button>
+                        <button type="submit" class="btn btn-primary">Change Profile</button>
                     </div>
                 </fieldset>
             </form>
