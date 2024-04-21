@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../partials/bootstrap"); %> <!--You might need to change the path to bootstrap-->
+
+    <title>User List</title>
+</head>
+<body>
+    <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
+    
+    <div class="container mt-5">
+        <% if (userToView) { %>
+            <h1><strong><u>Viewing:</u> </strong><%= userToView.firstName %> <%= userToView.lastName %></h1>
+            <fieldset class="mt-4" disabled>
+                <div class="row">
+                    <div class="col">
+                        <!-- First Name -->
+                        <div class="form-floating mb-3">
+                            <input type="text" name="firstName" id="firstNameInput" class="form-control" placeholder="Jamal" value="<%= userToView.firstName %>">
+                            <label for="firstNameInput">First Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <!-- Last Name -->
+                        <div class="form-floating mb-3">
+                            <input type="text" name="lastName" id="lastNameInput" class="form-control" placeholder="The Otter" value="<%= userToView.lastName %>">
+                            <label for="lastNameInput">Last name</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-floating mb-3">
+                    <input type="email" name="email" id="emailInput" class="form-control" placeholder="jamal@gmail.com" value="<%= userToView.email %>">
+                    <label for="emailInput">Email</label>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-floating mb-3">
+                    <input type="tel" name="phone" id="phoneInput" class="form-control" placeholder="+15555555555" value="<%= userToView.phone %>">
+                    <label for="phoneInput">Phone</label>
+                </div>
+
+                <!-- <div class="row">
+                    <div class="col-9">
+                        <a href="/tasks/new" type="button" class="btn btn-primary">New Task</a>
+                    </div>
+
+                    <div class="col-9 justify-content-end">
+                        <a href="/admin/users/<%= userToView.id %>/disable" class="btn btn-danger">Disable User</a>
+                        <a href="/admin/users/<%= userToView.id %>/delete" class="btn btn-warning">Delete User</a>
+                    </div>
+                </div> -->
+            </fieldset>
+
+            <div class="row justify-content-between">
+                <div class="col-3">
+                    <a href="/admin/users/<%= userToView.id %>/edit" class="btn btn-primary">Edit User</a>
+                </div>
+                <div class="col-4">
+                    <div class="float-end">
+                        <a href="/admin/users/<%= userToView.id %>/resetpassword" class="btn btn-primary">Reset Password</a>
+                        <a href="/admin/users/<%= userToView.id %>/disable" class="btn btn-warning">Disable</a>
+                        <a href="/admin/users/<%= userToView.id %>/delete" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <%- include("../partials/footer"); %> <!-- and this too -->
+</body>
+</html>

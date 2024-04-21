@@ -26,8 +26,74 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
     res.render("admin/viewusers", {
         isAuthenticated: req.isAuthenticated(),
         user: req.user,
-        userList: userList
+        userList: userList,
+        pageNumber: pageNumber
     });
 });
+
+router.get("/users/:userId/", passport.authenticate("session"), async (req: Request, res: Response) => {
+    if (!req.isAuthenticated() || !(req.user as User).administrator) {
+        res.redirect("/login");
+        return;
+    }
+
+    if (!(req.user instanceof User)) {
+        res.status(500);
+        return;
+    }
+    
+    const userToView: User = (await User.findAll({
+        where: {
+            id: req.params.userId
+        }
+    }))[0];
+
+    res.render("admin/viewuser", {
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user,
+        userToView: userToView
+    });
+});
+
+router.route("/users/:userId/edit")
+    .all(passport.authenticate("session"))
+    .get(async (req: Request, res: Response) => {
+        if (!req.isAuthenticated() || !(req.user as User).administrator) {
+            res.redirect("/login");
+            return;
+        }
+    
+        if (!(req.user instanceof User)) {
+            res.status(500);
+            return;
+        }
+        
+        const userToView: User = (await User.findAll({
+            where: {
+                id: req.params.userId
+            }
+        }))[0];
+
+        res.render("admin/edituser", {
+            isAuthenticated: req.isAuthenticated(),
+            user: req.user,
+            userToView: userToView
+        })
+    })
+    .post((req: Request, res: Response) => {
+        if (!req.isAuthenticated() || !(req.user as User).administrator) {
+            res.redirect("/login");
+            return;
+        }
+    
+        if (!(req.user instanceof User)) {
+            res.status(500);
+            return;
+        }
+
+        // actually update the user's details
+
+        res.redirect("/admin/");
+    });
 
 module.exports = router;

@@ -13,7 +13,26 @@
     
     <div class="container mt-5">
         <h1>User List</h1>
-        
+        <div class="list-group mt-3">
+            <% for (const user of userList) { %>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="mb-1"><%= user.firstName %> <%= user.lastName %></h5>
+                            <p class="mb-1"><%= user.email %></p>
+                        </div>
+                        <div class="col-2">
+
+                        </div>
+                        <div class="col-4 justify-content-end">
+                            <a href="/admin/users/<%= user.id %>" class="btn btn-success">View User</a>
+                            <a href="/admin/users/<%= user.id %>/disable" class="btn btn-warning">Disable User</a>
+                            <a href="/admin/users/<%= user.id %>/delete" class="btn btn-danger">Delete User</a>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
     </div>
 
     <%- include("../partials/footer"); %> <!-- and this too -->
