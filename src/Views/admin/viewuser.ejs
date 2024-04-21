@@ -15,6 +15,12 @@
         <% if (userToView) { %>
             <h1><strong><u>Viewing:</u> </strong><%= userToView.firstName %> <%= userToView.lastName %></h1>
             <fieldset class="mt-4" disabled>
+                <!-- User ID -->
+                <div class="form-floating mb-3">
+                    <input type="text" name="id" id="idInput" class="form-control" placeholder="0" value="<%= userToView.id %>" disabled>
+                    <label for="idInput">User ID</label>
+                </div>
+                
                 <div class="row">
                     <div class="col">
                         <!-- First Name -->
@@ -44,17 +50,18 @@
                     <input type="tel" name="phone" id="phoneInput" class="form-control" placeholder="+15555555555" value="<%= userToView.phone %>">
                     <label for="phoneInput">Phone</label>
                 </div>
-
-                <!-- <div class="row">
-                    <div class="col-9">
-                        <a href="/tasks/new" type="button" class="btn btn-primary">New Task</a>
-                    </div>
-
-                    <div class="col-9 justify-content-end">
-                        <a href="/admin/users/<%= userToView.id %>/disable" class="btn btn-danger">Disable User</a>
-                        <a href="/admin/users/<%= userToView.id %>/delete" class="btn btn-warning">Delete User</a>
-                    </div>
-                </div> -->
+                
+                <!-- Enabled -->
+                <div class="form-check mb-3">
+                    <input type="checkbox" name="isEnabled" id="isEnabledCheckbox" class="form-check-input" <% if (!userToView.disabled) { %> checked <% } %>>
+                    <label for="isEnabledCheckbox">Account Enabled?</label>
+                </div>
+                
+                <!-- Is Administrator -->
+                <div class="form-check mb-3">
+                    <input type="checkbox" name="isAdmin" id="isAdminCheckbox" class="form-check-input" <% if (userToView.administator) { %> checked <% } %>>
+                    <label for="isAdminCheckbox">Is Administrator?</label>
+                </div>
             </fieldset>
 
             <div class="row justify-content-between">
@@ -64,8 +71,8 @@
                 <div class="col-4">
                     <div class="float-end">
                         <a href="/admin/users/<%= userToView.id %>/resetpassword" class="btn btn-primary">Reset Password</a>
-                        <a href="/admin/users/<%= userToView.id %>/disable" class="btn btn-warning">Disable</a>
-                        <a href="/admin/users/<%= userToView.id %>/delete" class="btn btn-danger">Delete</a>
+                        <!-- <a href="/admin/users/<%= userToView.id %>/disable" class="btn btn-warning">Disable</a> -->
+                        <a href="/admin/users/<%= userToView.id %>/delete" class="btn btn-outline-danger">Delete</a>
                     </div>
                 </div>
             </div>

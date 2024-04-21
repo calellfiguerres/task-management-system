@@ -16,6 +16,12 @@
             <h1><strong><u>Editing:</u> </strong><%= userToView.firstName %> <%= userToView.lastName %></h1>
             <form action="" method="post">
                 <fieldset class="mt-4">
+                    <!-- User ID -->
+                    <div class="form-floating mb-3">
+                        <input type="text" name="id" id="idInput" class="form-control" placeholder="0" value="<%= userToView.id %>" disabled>
+                        <label for="idInput">User ID</label>
+                    </div>
+
                     <div class="row">
                         <div class="col">
                             <!-- First Name -->
@@ -45,8 +51,23 @@
                         <input type="tel" name="phone" id="phoneInput" class="form-control" placeholder="+15555555555" value="<%= userToView.phone %>">
                         <label for="phoneInput">Phone</label>
                     </div>
-    
-                    <button type="submit" class="btn btn-primary">Submit Edits</button:sub>
+                
+                    <!-- Enabled -->
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="isEnabled" id="isEnabledCheckbox" class="form-check-input" <% if (!userToView.disabled) { %> checked <% } %>>
+                        <label for="isEnabledCheckbox">Account Enabled?</label>
+                    </div>
+                    
+                    <!-- Is Administrator -->
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="isAdmin" id="isAdminCheckbox" class="form-check-input" <% if (userToView.administator) { %> checked <% } %>>
+                        <label for="isAdminCheckbox">Is Administrator?</label>
+                    </div>
+
+                    <div class="float-end">
+                        <a href="/admin/users/<%= userToView.id %>" class="btn btn-outline-primary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Submit Changes</button>
+                    </div>
                 </fieldset>
             </form>
         <% } %>
