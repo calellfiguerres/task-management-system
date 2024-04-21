@@ -12,7 +12,7 @@
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
     
     <div class="container mt-5">
-        <a href="/admin/" class="btn btn-outline-secondary mb-2">Back</a>
+        <button onclick="history.back()" class="btn btn-outline-secondary mb-2">Back</button>
         <% if (userToView) { %>
             <h1><strong><u>Viewing:</u> </strong><%= userToView.firstName %> <%= userToView.lastName %></h1>
             <fieldset class="mt-4" disabled>
