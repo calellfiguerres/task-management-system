@@ -12,6 +12,7 @@
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
     
     <div class="container mt-5">
+        <%- include("../partials/flashMessages"); %>
         <a href="/admin/" class="btn btn-outline-secondary">Back</a>
         <% if (userToView) { %>
             <h1><strong><u>Viewing:</u> </strong><%= userToView.firstName %> <%= userToView.lastName %></h1>

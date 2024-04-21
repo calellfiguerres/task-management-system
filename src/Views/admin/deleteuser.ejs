@@ -12,6 +12,7 @@
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
     
     <div class="container mt-5">
+        <%- include("../partials/flashMessages"); %>
         <% if (userToDelete.administrator) { %>
             <div class="alert alert-danger">
                 This user is an administrator and cannot be deleted!

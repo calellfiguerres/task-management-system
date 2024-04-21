@@ -12,6 +12,7 @@
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
     
     <div class="container mt-5">
+        <%- include("../partials/flashMessages"); %>
         <h1>User List</h1>
         <div class="list-group mt-3">
             <% for (const user of userList) { %>
