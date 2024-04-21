@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../partials/bootstrap"); %> <!--You might need to change the path to bootstrap-->
+
+    <title>User List</title>
+</head>
+<body>
+    <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
+    
+    <div class="container mt-5">
+        <% if (userToDelete.administrator) { %>
+            <div class="alert alert-danger">
+                This user is an administrator and cannot be deleted!
+            </div>
+        <% } %>
+        <h1><strong><u>Confirm Deletion:</u></strong> <%= userToDelete.firstName %> <%= userToDelete.lastName %></h1>
+        <br>
+        <p>Are you sure you want to delete the user <u><%= userToDelete.firstName %> <%= userToDelete.lastName %></u>?</p>
+        <br>
+        <p><strong><u>THIS ACTION IS IRREVERSIBLE.</u></strong></p>
+
+        <button onclick="history.back()" class="btn btn-outline-primary">Cancel</button>
+        <% if (!userToDelete.administrator) { %> 
+            <a href="?confirm=true" class="btn btn-danger">Delete User</a>
+        <% } else { %>
+            <a class="btn btn-danger disabled">Delete User</a>
+        <% } %>
+    </div>
+
+    <%- include("../partials/footer"); %> <!-- and this too -->
+</body>
+</html>

@@ -132,4 +132,43 @@ router.route("/users/:userId/edit")
         res.redirect("/admin/");
     });
 
+router.get("/users/:userId/delete", passport.authenticate("session"), async (req: Request, res: Response) => {
+    if (!req.isAuthenticated() || !(req.user as User).administrator) {
+        res.redirect("/login");
+        return;
+    }
+
+    if (!(req.user instanceof User)) {
+        res.status(500);
+        return;
+    }
+
+    const userToDelete: User | null = (await User.findAll({
+        where: {
+            id: Number(req.params.userId)
+        }
+    }))[0];
+
+    if (userToDelete == null) {
+        res.send("unknown user");
+    }
+
+    if (req.query.confirm == "true") {
+        if (userToDelete.administrator) {
+            res.send("cannot delete admin");
+            return;
+        }
+
+        await userToDelete.destroy();
+        res.redirect("/admin/");
+        return;
+    } 
+
+    res.render("admin/deleteuser", {
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user,
+        userToDelete: userToDelete
+    });
+});
+
 module.exports = router;
