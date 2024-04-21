@@ -24,7 +24,7 @@
         <br>
         <p><strong><u>THIS ACTION IS IRREVERSIBLE.</u></strong></p>
 
-        <button onclick="history.back()" class="btn btn-outline-primary">Cancel</button>
+        <a href="/admin/" class="btn btn-outline-secondary">Cancel</a>
         <% if (!userToDelete.administrator) { %> 
             <a href="?confirm=true" class="btn btn-danger">Delete User</a>
         <% } else { %>

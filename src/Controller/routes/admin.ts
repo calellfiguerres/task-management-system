@@ -1,6 +1,7 @@
 import express, { Router, Request, Response } from "express";
-import passport from "passport";
+import passport, { use } from "passport";
 import { User } from "../../Models/User";
+import { FlashMessageType } from "../FlashMessageType";
 
 const router: Router = express.Router();
 
@@ -76,6 +77,10 @@ router.route("/users/:userId/edit")
             }
         }))[0];
 
+        if (req.user.id == userToView.id) {
+            req.flash(FlashMessageType.WARNING, "You are editing your own profile!");
+        }
+
         res.render("admin/edituser", {
             messages: req.flash(),
             isAuthenticated: req.isAuthenticated(),
@@ -104,19 +109,23 @@ router.route("/users/:userId/edit")
         }))[0];
 
         if (req.body.firstName.length > 255){
-            res.send("Your first name was way too long!");
+            req.flash(FlashMessageType.DANGER, "The provided first name is too long.")
+            res.redirect(`/admin/users/${req.params.userId}/edit`)
             return;
         }
         if (req.body.lastName.length > 255){
-            res.send("Your last name was too long!");
+            req.flash(FlashMessageType.DANGER, "The provided last name is too long.")
+            res.redirect(`/admin/users/${req.params.userId}/edit`)
             return;
         }
         if (req.body.email.length > 255){
-            res.send("Your email was way too long!");
+            req.flash(FlashMessageType.DANGER, "The provided email is too long.")
+            res.redirect(`/admin/users/${req.params.userId}/edit`)
             return;
         }
         if (req.body.phone.length > 255){
-            res.send("Your phone number was too long");
+            req.flash(FlashMessageType.DANGER, "The provided phone number is too long.")
+            res.redirect(`/admin/users/${req.params.userId}/edit`)
             return;
         }
 
@@ -126,9 +135,6 @@ router.route("/users/:userId/edit")
         userToUpdate.phone = req.body.phone;
         userToUpdate.active = req.body.isEnabled == "on";
         userToUpdate.administrator = req.body.isAdmin == "on";
-
-        console.log(typeof req.body.isEnabled, req.body.isEnabled);
-        console.log(typeof req.body.isAdmin, req.body.isAdmin);
 
         await userToUpdate.save()
 
@@ -152,19 +158,22 @@ router.get("/users/:userId/delete", passport.authenticate("session"), async (req
         }
     }))[0];
 
+    if (req.user.id == userToDelete.id) {
+        req.flash(FlashMessageType.WARNING, "You are attempting to delete your own profile!");
+    }
+
     if (userToDelete == null) {
         res.send("unknown user");
     }
 
     if (req.query.confirm == "true") {
         if (userToDelete.administrator) {
-            res.send("cannot delete admin");
+            req.flash(FlashMessageType.DANGER, "Administrator users cannot be deleted.")
+        } else {
+            await userToDelete.destroy();
+            res.redirect("/admin/");
             return;
         }
-
-        await userToDelete.destroy();
-        res.redirect("/admin/");
-        return;
     } 
 
     res.render("admin/deleteuser", {
