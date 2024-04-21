@@ -1,21 +1,27 @@
 import { PassportStatic } from "passport";
 import { User } from "../Models/User";
+import { FlashMessageType } from "./FlashMessageType";
 
 const passport: PassportStatic = require("passport");
 const localStrategy = require("passport-local");
 
-passport.use(new localStrategy(async (email: any, password: any, cb: any) => {
+passport.use(new localStrategy({
+    passReqToCallback: true,    
+}, async (req: any, email: any, password: any, cb: any) => {
     const u: User | null = (await User.findAll({
         where: {
             email: email
         }
     }))[0];
-    if (u == null) {
+    if (u == null || !u.checkPassword(password)) {
+        req.flash(FlashMessageType.DANGER, "Username or password incorrect!");
         return cb(null, false);
     }
-    if (!u.checkPassword(password) || !u.active) {
+    if (!u.active) {
+        req.flash(FlashMessageType.DANGER, "Account disabled! Please contact an administrator for further assistance.");
         return cb(null, false);
     }
+    req.flash(FlashMessageType.SUCCESS, "Login Successful!")
     return cb(null, u);
 }));
 

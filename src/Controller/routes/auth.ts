@@ -57,7 +57,7 @@ router.get("/logout", passport.authenticate("session"), (req: Request, res: Resp
         if (err) {
 
         }
-        req.flash(FlashMessageType.INFO, "Logout successful!")
+        req.flash(FlashMessageType.SUCCESS, "Logout successful!")
         res.redirect("/auth/login");
     });
 });
