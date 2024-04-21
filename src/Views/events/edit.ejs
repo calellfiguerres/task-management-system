@@ -6,7 +6,7 @@
 
     <%- include("../partials/bootstrap"); %> <!--You might need to change the path to bootstrap-->
 
-    <title>Edit Task</title>
+    <title>Edit Event</title>
 </head>
 <body>
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
@@ -17,32 +17,25 @@
         <form action="" method="POST">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" required value = "<%= task.name%>">
+                <input type="text" class="form-control" id="name" name="name" required value = "<%= event.name%>">
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea class="form-control" id="description" name="description" rows="3" required><%= task.description %></textarea>
+                <textarea class="form-control" id="description" name="description" rows="3" required><%= event.description %></textarea>
             </div>
             <div class="form-group">
-                <label for="dueDate">Due Date:</label>
-                <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" value = "<%= dateFillIn %>">
+                <label for="dueDate">Start Date:</label>
+                <input type="datetime-local" class="form-control" id="dueDate" name="startDate" value = "<%= startDateFillIn %>">
             </div>
             <div class="form-group">
-                <label for="priority">Priority:</label>
-                <select class="form-control" id="priority" name="priority" required value = <%= task.priority%>>
-                    <option value="0">Low</option>
-                    <option value="1">Medium</option>
-                    <option value="2">High</option>
-                </select>
+                <label for="dueDate">End Date:</label>
+                <input type="datetime-local" class="form-control" id="dueDate" name="endDate" value = "<%= endDateFillIn %>">
             </div>
             <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            <a href="/events/<%= event.id %>/delete" class="btn btn-danger mt-3">Delete</a>
         </form>
     </div>
 
     <%- include("../partials/footer"); %> <!-- and this too -->
-
-    <script>
-        console.log(task.dueDate);
-    </script>
 </body>
 </html>

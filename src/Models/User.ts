@@ -106,6 +106,24 @@ export class User extends Model {
     }
 
     /**
+     * Removes an event from this user's events
+     * @param e The event to remove
+     */
+    public async removeEvent(e: Event): Promise<void> {
+        await this.$remove("ownedEvents", e);
+    }
+
+    /**
+     * Checks whether the calling `user` owns the given `event`
+     * 
+     * @param event The event to check
+     * @returns Whether the user owns the given `event`
+     */
+    public ownsEvent(event: Event): boolean {
+        return this.id === event.eventOwnerId;
+    }
+
+    /**
      * The user's password.
      */
     @Column

@@ -22,7 +22,9 @@
           var calendarEl = document.getElementById('calendar');
           var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            events: <%- JSON.stringify(fullCalenderEvents) %>
+            events: <%- JSON.stringify(fullCalenderEvents) %>,
+            
+
           });
           calendar.render();
         });

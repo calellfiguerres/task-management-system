@@ -35,7 +35,7 @@ export class Event extends Model {
      */
     @ForeignKey(() => User)
     @Column
-    private eventOwnerId?: number;
+    public eventOwnerId?: number;
 
     /**
      * The owner of this event.
