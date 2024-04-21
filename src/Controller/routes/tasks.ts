@@ -57,8 +57,6 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
         }
     });
 
-    req.flash(FlashMessageType.DANGER, "asdlfkjasldkfj");
-
     res.render('tasks/viewtasks', {
         messages: req.flash(),
         isAuthenticated: req.isAuthenticated(),
@@ -90,16 +88,16 @@ router.route("/new")
             return;
         }
         if (req.body.name.length > 255){
-            res.send("Your task name was way too long!");
+            req.flash(FlashMessageType.DANGER, "Your task name was way too long!");
             return;
         }
         if (req.body.description.length > 255){
-            res.send("Your task description was too long");
+            req.flash(FlashMessageType.DANGER, "Your task description was too long!");
             return;
         }
         const convertedDate: Date = new Date(req.body.dueDate);
         if (convertedDate.toString() == "Invalid Date") {
-            res.send("Your date is invalid");
+            req.flash(FlashMessageType.DANGER, "Your date was invalid!");
             return;
         }
 
@@ -115,6 +113,8 @@ router.route("/new")
             priority: req.body.priority
         });
         (req.user as User).addTask(t);
+
+        req.flash(FlashMessageType.SUCCESS, `Successfully created task <u>${t.name}</u>!`)
         res.redirect("/tasks");
     });
 
@@ -140,6 +140,7 @@ router.get("/:taskId/complete", passport.authenticate("session"), async (req: Re
     task.completed = true;
     await task.save();
 
+    req.flash(FlashMessageType.SUCCESS, `Completed <u>${task.name}</u>! Congragulations!`);
     res.redirect("/tasks");
 });
 
@@ -165,6 +166,7 @@ router.get("/:taskId/incomplete", passport.authenticate("session"), async (req: 
     task.completed = false;
     await task.save();
 
+    req.flash(FlashMessageType.SUCCESS, `<u>${task.name}</u> was marked incomplete.`);
     res.redirect("/tasks");
 });
 
@@ -237,6 +239,7 @@ router.post("/:taskId/edit", passport.authenticate("session"), async (req: Reque
 
     await task.save()
 
+    req.flash(FlashMessageType.SUCCESS, `Edited <u>${task.name}</u>.`);
     res.redirect("/tasks");
 });
 
@@ -264,6 +267,7 @@ router.get("/:taskId/delete", passport.authenticate("session"), async (req: Requ
         task.destroy()
     ]);
 
+    req.flash(FlashMessageType.SUCCESS, `Deleted <u>${task.name}</u>.`);
     res.redirect("/tasks");
 });
 
