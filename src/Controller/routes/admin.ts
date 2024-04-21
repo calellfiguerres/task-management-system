@@ -24,6 +24,7 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
     });
     
     res.render("admin/viewusers", {
+        messages: req.flash(),
         isAuthenticated: req.isAuthenticated(),
         user: req.user,
         userList: userList,
@@ -49,6 +50,7 @@ router.get("/users/:userId/", passport.authenticate("session"), async (req: Requ
     }))[0];
 
     res.render("admin/viewuser", {
+        messages: req.flash(),
         isAuthenticated: req.isAuthenticated(),
         user: req.user,
         userToView: userToView
@@ -75,6 +77,7 @@ router.route("/users/:userId/edit")
         }))[0];
 
         res.render("admin/edituser", {
+            messages: req.flash(),
             isAuthenticated: req.isAuthenticated(),
             user: req.user,
             userToView: userToView
@@ -165,6 +168,7 @@ router.get("/users/:userId/delete", passport.authenticate("session"), async (req
     } 
 
     res.render("admin/deleteuser", {
+        messages: req.flash(),
         isAuthenticated: req.isAuthenticated(),
         user: req.user,
         userToDelete: userToDelete

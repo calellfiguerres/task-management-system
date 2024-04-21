@@ -3,6 +3,7 @@ import passport from "passport";
 import { Task } from "../../Models/Task";
 import { User } from "../../Models/User";
 import { TaskPriority } from "../../Models/TaskPriority";
+import { FlashMessageType } from "../FlashMessageType";
 
 function convertToUTC(date: Date): Date {
     return new Date(Date.UTC(
@@ -56,13 +57,16 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
         }
     });
 
+    req.flash(FlashMessageType.DANGER, "asdlfkjasldkfj");
+
     res.render('tasks/viewtasks', {
+        messages: req.flash(),
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user,
         overdueTasks: overdueTasks,
         completedTasks: completedTasks,
         tasks: tasks,
         sort: req.query.sort,
-        isAuthenticated: req.isAuthenticated(),
-        user: req.user
     });
 });
 
@@ -73,7 +77,11 @@ router.route("/new")
             res.redirect("/auth/login");
             return;
         }
-        res.render("tasks/newtask", {isAuthenticated: req.isAuthenticated(), user: req.user});
+        res.render("tasks/newtask", {
+            messages: req.flash(),
+            isAuthenticated: req.isAuthenticated(),
+            user: req.user
+        });
     })
     .post(async (req: Request, res: Response) => {
         // console.log(req.body);
@@ -187,9 +195,10 @@ router.get("/:taskId/edit", passport.authenticate("session"), async (req: Reques
 
 
     res.render('tasks/edit', {
-        task: task,
+        messages: req.flash(),
         isAuthenticated: req.isAuthenticated(),
         user: req.user,
+        task: task,
         dateFillIn: date != null ? date.toISOString().slice(0,16) : false
     });
 });

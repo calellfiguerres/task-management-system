@@ -49,9 +49,10 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
     console.log(fullCalenderEvents);
 
     res.render('events/viewevents', {
-        events: events,
+        messages: req.flash(),
         isAuthenticated: req.isAuthenticated(),
         user: req.user,
+        events: events,
         fullCalenderEvents: fullCalenderEvents
     });
 });
@@ -63,7 +64,11 @@ router.route("/new")
             res.redirect("/auth/login");
             return;
         }
-        res.render("events/newevent", {isAuthenticated: req.isAuthenticated(), user: req.user});
+        res.render("events/newevent", {
+            messages: req.flash(),
+            isAuthenticated: req.isAuthenticated(),
+            user: req.user
+        });
     })
     .post(async (req: Request, res: Response) => {
         // console.log(req.body);
