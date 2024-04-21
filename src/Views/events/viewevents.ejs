@@ -7,11 +7,70 @@
     <%- include("../partials/bootstrap"); %> <!--You might need to change the path to bootstrap-->
 
     <title>View Events</title>
+    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.css" rel="stylesheet">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <link href="static/events.css" rel="stylesheet" media="all">
+    <style>
+        /* Style for the calendar container */
+        #calendar {
+          margin: 0 40px; /* Adjust the margin as needed */
+        }
+      </style>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: <%- JSON.stringify(fullCalenderEvents) %>
+          });
+          calendar.render();
+        });
+      </script>
 </head>
 <body>
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
     
-    
+    <div id="calendar"></div>
+
+    <div class="container mt-3 mb-3">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+            <!-- <a href="/events/new" class="btn btn-primary btn-lg addevent">Add New Event</a> -->
+            <a href="/events/new" class="btn btn-primary btn-lg">Add New Event</a>
+            </div>
+        </div>
+    </div>
+    <!-- <script>
+
+        console.log("before");
+
+        // <%= JSON.stringify(fullCalenderEvents) %>
+
+        console.log("after");
+
+        document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            // plugins: ['dayGrid'], // Load the DayGrid plugin
+            initialView: 'dayGridMonth', // Display month view initially
+            events: 
+            
+            
+            
+            //[
+            // Sample event data
+            //   {
+            //     title: "asdf",
+            //     start: "2024-04-01",
+            //     end: "2024-04-02"
+            //   }
+            // Add more event objects as needed
+            // ]
+        });
+        calendar.render();
+        });
+    </script> -->
 
     <%- include("../partials/footer"); %> <!-- and this too -->
 </body>

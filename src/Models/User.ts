@@ -89,7 +89,7 @@ export class User extends Model {
     /**
      * The list of events this user owns.
      */
-    @HasMany(() => Task)
+    @HasMany(() => Event)
     public ownedEvents?: Event[];
 
     public async getEvents(): Promise<$GetType<this["ownedEvents"]>> {
