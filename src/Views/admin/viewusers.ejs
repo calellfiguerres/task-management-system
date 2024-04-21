@@ -19,7 +19,15 @@
                 <div class="list-group-item">
                     <div class="row">
                         <div class="col-6">
-                            <h5 class="mb-1"><%= user.firstName %> <%= user.lastName %></h5>
+                            <h5 class="mb-1">
+                                <%= user.firstName %> <%= user.lastName %>
+                                <% if (!user.active) { %>
+                                    <span class="badge bg-danger text-bg-danger">Disabled</span>
+                                <% } %>
+                                <% if (user.administrator) { %>
+                                    <span class="badge bg-primary text-bg-primary">Admin</span>
+                                <% } %>
+                            </h5>
                             <p class="mb-1"><%= user.email %></p>
                         </div>
                         <div class="col-2">
