@@ -18,11 +18,17 @@
                       Hello, <%= user.firstName %>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">Profile</a></li>
-                      <!-- <li><a class="dropdown-item" href="#">Another action</a></li> -->
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
-                    </ul>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a href="/tasks/" class="dropdown-item">Tasks</a></li>
+                        <li><a href="/events/" class="dropdown-item">Events</a></li>
+                        <% if (user.administrator) { %>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a href="/admin" class="dropdown-item">Admin Panel</a></li>
+                        <% } %>      
+                        <!-- <li><a class="dropdown-item" href="#">Another action</a></li> -->
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
+                        </ul>
                 </div>
             <% } else { %>
                 <a href="/auth/login" class="navbar-text nav-link">Sign Up / Login</a>

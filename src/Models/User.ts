@@ -96,6 +96,11 @@ export class User extends Model {
         return await this.$get("ownedEvents");
     }
 
+    /**
+     * Adds an event to this user's events
+     * 
+     * @param e The event to add
+     */
     public async addEvent(e: Event): Promise<void> {
         await this.$add("ownedEvents", e);
     }
