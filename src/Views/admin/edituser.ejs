@@ -12,7 +12,7 @@
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
     
     <div class="container mt-5">
-        <button onclick="history.back()" class="btn btn-outline-secondary mb-2">Back</button>
+        <a href="/admin/users/<%= userToView.id %>/" class="btn btn-outline-secondary mb-2">Back</a>
         <% if (userToView) { %>
             <h1><strong><u>Editing:</u> </strong><%= userToView.firstName %> <%= userToView.lastName %></h1>
             <form action="" method="post">
@@ -55,13 +55,13 @@
                 
                     <!-- Enabled -->
                     <div class="form-check mb-3">
-                        <input type="checkbox" name="isEnabled" id="isEnabledCheckbox" class="form-check-input" <% if (!userToView.disabled) { %> checked <% } %>>
+                        <input type="checkbox" name="isEnabled" id="isEnabledCheckbox" class="form-check-input" <% if (userToView.active) { %> checked <% } %>>
                         <label for="isEnabledCheckbox">Account Enabled?</label>
                     </div>
                     
                     <!-- Is Administrator -->
                     <div class="form-check mb-3">
-                        <input type="checkbox" name="isAdmin" id="isAdminCheckbox" class="form-check-input" <% if (userToView.administator) { %> checked <% } %>>
+                        <input type="checkbox" name="isAdmin" id="isAdminCheckbox" class="form-check-input" <% if (userToView.administrator) { %> checked <% } %>>
                         <label for="isAdminCheckbox">Is Administrator?</label>
                     </div>
 

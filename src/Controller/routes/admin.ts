@@ -80,7 +80,7 @@ router.route("/users/:userId/edit")
             userToView: userToView
         })
     })
-    .post((req: Request, res: Response) => {
+    .post(async (req: Request, res: Response) => {
         if (!req.isAuthenticated() || !(req.user as User).administrator) {
             res.redirect("/login");
             return;
@@ -92,6 +92,42 @@ router.route("/users/:userId/edit")
         }
 
         // actually update the user's details
+        const user: User = req.user;
+        
+        const userToUpdate: User = (await User.findAll({
+            where: {
+                id: req.params.userId
+            }
+        }))[0];
+
+        if (req.body.firstName.length > 255){
+            res.send("Your first name was way too long!");
+            return;
+        }
+        if (req.body.lastName.length > 255){
+            res.send("Your last name was too long!");
+            return;
+        }
+        if (req.body.email.length > 255){
+            res.send("Your email was way too long!");
+            return;
+        }
+        if (req.body.phone.length > 255){
+            res.send("Your phone number was too long");
+            return;
+        }
+
+        userToUpdate.firstName = req.body.firstName;
+        userToUpdate.lastName = req.body.lastName;
+        userToUpdate.email = req.body.email;
+        userToUpdate.phone = req.body.phone;
+        userToUpdate.active = req.body.isEnabled == "on";
+        userToUpdate.administrator = req.body.isAdmin == "on";
+
+        console.log(typeof req.body.isEnabled, req.body.isEnabled);
+        console.log(typeof req.body.isAdmin, req.body.isAdmin);
+
+        await userToUpdate.save()
 
         res.redirect("/admin/");
     });
