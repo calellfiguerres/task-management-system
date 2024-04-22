@@ -1,6 +1,7 @@
 import { Table, Column, Model, HasMany, DataType, $GetType } from "sequelize-typescript";
 import { Task } from "./Task";
 import { Event } from "./Event";
+import { PasswordResetToken } from "./PasswordResetToken";
 
 /**
  * A user in the database.
@@ -146,5 +147,26 @@ export class User extends Model {
      */
     public checkPassword(password: string): boolean {
         return this.password === password;
+    }
+
+    /**
+     * The password reset tokens for this user.
+     */
+    @HasMany(() => PasswordResetToken)
+    public passwordResetTokens?: PasswordResetToken[];
+
+    public async addPasswordResetToken(token: PasswordResetToken): Promise<void> {
+        await this.$add("passwordResetTokens", token);
+    }
+
+    /**
+     * Begins the password reset process for a user; generates and saves a one
+     * time token that can be provided during the password reset process to
+     * reset their password 
+     * 
+     * @returns The token to reset the user's password
+     */
+    public async resetPassword(): Promise<PasswordResetToken> {
+        return await PasswordResetToken.createResetToken(this);
     }
 }

@@ -2,6 +2,7 @@ import express, { Router, Request, Response } from "express";
 import passport, { use } from "passport";
 import { User } from "../../Models/User";
 import { FlashMessageType } from "../FlashMessageType";
+import { sendPasswordResetEmail } from "../emailController";
 
 const router: Router = express.Router();
 
@@ -181,6 +182,48 @@ router.get("/users/:userId/delete", passport.authenticate("session"), async (req
         isAuthenticated: req.isAuthenticated(),
         user: req.user,
         userToDelete: userToDelete
+    });
+});
+
+router.get("/users/:userId/resetpassword", passport.authenticate("session"), async (req: Request, res: Response) => {
+    if (!req.isAuthenticated() || !(req.user as User).administrator) {
+        res.redirect("/login");
+        return;
+    }
+
+    if (!(req.user instanceof User)) {
+        res.status(500);
+        return;
+    }
+
+    const userToReset: User | null = (await User.findAll({
+        where: {
+            id: Number(req.params.userId)
+        }
+    }))[0];
+
+    if (req.user.id == userToReset.id) {
+        req.flash(FlashMessageType.WARNING, "You are attempting to delete your own profile!");
+    }
+
+    if (req.query.confirm == "true") {
+        const result = await sendPasswordResetEmail(userToReset);
+        if (result) {
+            req.flash(FlashMessageType.SUCCESS, "User has been a password reset email!");
+            res.redirect("/admin/");
+            return;
+        } else {
+            req.flash(FlashMessageType.DANGER, "Unable to send password reset email; check logs for more information.");
+            res.redirect(`/admin/users/${userToReset.id}`);
+            return;
+        }
+    } 
+
+    res.render("admin/resetUserPassword", {
+        messages: req.flash(),
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user,
+        userToReset: userToReset
     });
 });
 
