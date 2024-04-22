@@ -4,13 +4,14 @@
   "description": "A system to manage one's tasks and events throughout the day.",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon --exec 'npx ts-node index.ts' --ext 'ts,json'",
+    "dev": "nodemon --exec 'npx dotenvx run -- npx ts-node index.ts' --ext 'ts,json'",
     "build": "npx tsc"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.556.0",
+    "@dotenvx/dotenvx": "^0.35.1",
     "@types/connect-flash": "^0.0.40",
     "@types/cookie-parser": "^1.4.7",
     "connect-flash": "^0.1.1",
