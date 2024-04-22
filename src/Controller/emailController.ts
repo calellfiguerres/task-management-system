@@ -17,16 +17,23 @@ export async function sendPasswordResetEmail(user: User): Promise<boolean> {
         return false;
     }
 
+    const token = await user.resetPassword();
+
+    const port = process.env.PORT;
+    const hostname = process.env.HOSTNAME;
+
+    const url = (port == "443" ? "https://" : "http://") + hostname + ((port == "80" || port == "443") ? "" : `:${port}`) + `/auth/resetpassword?token=${token.token}`;
+
     const input = {
-        FromEmailAddress: "noreply@jamaltime.tycoonlover1359.omg.lol",
-        FromEmailAddressIdentityArn: "", // CHANGE THIS
+        FromEmailAddress: "noreply@jamaltime.calell.omg.lol",
+        FromEmailAddressIdentityArn: "arn:aws:ses:us-west-2:651915650471:identity/jamaltime.calell.omg.lol", // CHANGE THIS
         Destination: {
             ToAddresses: [
                 destinationEmail
             ]
         },
-        FeedbackForwardingEmailAddress: "abuse@tycoonlover1359.omg.lol",
-        FeedbackForwardingEmailAddressIdentityArn: "", // CHANGE THIS
+        FeedbackForwardingEmailAddress: "abuse@jamaltime.calell.omg.lol",
+        FeedbackForwardingEmailAddressIdentityArn: "arn:aws:ses:us-west-2:651915650471:identity/jamaltime.calell.omg.lol", // CHANGE THIS
         Content: {
             Simple: {
                 Subject: {
@@ -34,7 +41,11 @@ export async function sendPasswordResetEmail(user: User): Promise<boolean> {
                 },
                 Body: {
                     Text: {
-                        Data: `Use this password reset token to reset your password: ${(await user.resetPassword()).token}`
+                        Data:
+                        `Use this link to reset your password: ${url}` + "\n\n" +
+                        `Alternatively, use this password reset token to reset your password: ${token.token}` + "\n\n" +
+                        `This link and token will be valid for 15 minutes.` + "\n\n" +
+                        `If you did not request this, please contact support immediately. Somebody else may be attempting to access your account.`
                     }
                 }
             }

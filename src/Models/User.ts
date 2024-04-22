@@ -167,6 +167,7 @@ export class User extends Model {
      * @returns The token to reset the user's password
      */
     public async resetPassword(): Promise<PasswordResetToken> {
+        await this.$set("passwordResetTokens", []);
         return await PasswordResetToken.createResetToken(this);
     }
 }
