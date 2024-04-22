@@ -16,9 +16,11 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
         res.status(500);
         return;
     }
-    
     const pageNumber: number = Number.parseInt((req.query.pageNumber as string)) || 1;
     console.log(pageNumber);
+
+    const userCount: number = await User.count();
+    const pageCount: number = Math.ceil(userCount / 10);
 
     const userList: User[] = await User.findAll({
         limit: 10,
@@ -30,7 +32,8 @@ router.get("/", passport.authenticate("session"), async (req: Request, res: Resp
         isAuthenticated: req.isAuthenticated(),
         user: req.user,
         userList: userList,
-        pageNumber: pageNumber
+        pageNumber: pageNumber,
+        pageCount: pageCount
     });
 });
 

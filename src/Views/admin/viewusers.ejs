@@ -44,6 +44,10 @@
                 </div>
             <% } %>
         </div>
+        <ul class="pagination mt-3">
+            <li class="page-item <% if (pageNumber <= 1) { %> disabled <% } %>"><a href="?pageNumber=<%= pageNumber - 1%>" class="page-link">Previous</a></li>
+            <li class="page-item <% if (pageNumber >= pageCount) { %> disabled <% } %>"><a href="?pageNumber=<%= pageNumber + 1%>" class="page-link">Next</a></li>
+        </ul>
     </div>
 
     <%- include("../partials/footer"); %> <!-- and this too -->
