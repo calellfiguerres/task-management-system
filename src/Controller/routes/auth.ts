@@ -26,14 +26,14 @@ router.route("/register")
             return;
         }
 
-        const adminCount: number = await User.count({ where: { administrator: true }});
+        const userCount: number = await User.count();
 
         const u: User = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             phone: req.body.phone,
-            administrator: adminCount == 0 ? true : false,
+            administrator: userCount == 0 ? true : false,
             active: true
         });
         u.setPassword(req.body.password);
