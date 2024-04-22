@@ -25,12 +25,15 @@ router.route("/register")
             res.redirect("/auth/register");
             return;
         }
+
+        const adminCount: number = await User.count({ where: { administrator: true }});
+
         const u: User = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             phone: req.body.phone,
-            administrator: false,
+            administrator: adminCount == 0 ? true : false,
             active: true
         });
         u.setPassword(req.body.password);
