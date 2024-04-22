@@ -78,31 +78,28 @@ router.route("/new")
             res.redirect("/auth/login");
             return;
         }
-        if (req.body.name.length > 255){
-            res.send("Your Event name was way too long!");
+        if (req.body.name.length > 255) {
+            req.flash(FlashMessageType.DANGER, "Your event name was too long!");
             return;
         }
-        if (req.body.description.length > 255){
-            res.send("Your Event description was too long");
+        if (req.body.description.length > 255) {
+            req.flash(FlashMessageType.DANGER, "Your event description was too long!");
             return;
         }
 
         const convertedStartDate: Date = new Date(req.body.startDate);
         if (convertedStartDate.toString() == "Invalid Date") {
-            res.send("Your date is invalid");
+            req.flash(FlashMessageType.DANGER, "Your event start date was invalid!");
             return;
         }
         const convertedEndDate: Date = new Date(req.body.endDate);
         if (convertedEndDate.toString() == "Invalid Date") {
-            res.send("Your date is invalid");
+            req.flash(FlashMessageType.DANGER, "Your event end date was too long!");
             return;
         }
 
-        // convertedDate.setMinutes(convertedDate.getMinutes() - convertedDate.getTimezoneOffset());
-        // const utcDate: Date = Date.UTC(convertedDate.toUTCString())
         const utcStartDate: Date = convertToUTC(convertedStartDate);
         const utcEndDate: Date = convertToUTC(convertedEndDate);
-        // console.log(utcDate);
 
         const e: Event = await Event.create({
             name: req.body.name,
@@ -130,7 +127,8 @@ router.route("/:eventId/edit")
         const user: User = req.user;
 
         if (!user.ownsEvent(event)) {
-            res.status(404).send("not found")
+            req.flash(FlashMessageType.DANGER, "Unknown Event.");
+            res.redirect("/events/");
             return;
         }
     
@@ -171,21 +169,25 @@ router.route("/:eventId/edit")
         const event: Event = (await Event.findAll({where:{id:req.params.eventId}}))[0];
     
         if (req.body.name.length > 255){
-            res.send("Your event name was way too long!");
+            req.flash(FlashMessageType.DANGER, "Your event name was too long!");
+            res.redirect(`/events/${event.id}/edit`)
             return;
         }
         if (req.body.description.length > 255){
-            res.send("Your event description was too long");
+            req.flash(FlashMessageType.DANGER, "Your event description was too long!");
+            res.redirect(`/events/${event.id}/edit`)
             return;
         }
         const convertedStartDate: Date = new Date(req.body.startDate);
         if (convertedStartDate.toString() == "Invalid Date") {
-            res.send("Your date is invalid");
+            req.flash(FlashMessageType.DANGER, "Your event start date was invalid!");
+            res.redirect(`/events/${event.id}/edit`)
             return;
         }
         const convertedEndDate: Date = new Date(req.body.endDate);
         if (convertedEndDate.toString() == "Invalid Date") {
-            res.send("Your date is invalid");
+            req.flash(FlashMessageType.DANGER, "Your event end date was invalid!");
+            res.redirect(`/events/${event.id}/edit`)
             return;
         }
         event.name = req.body.name;

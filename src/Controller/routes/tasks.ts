@@ -220,16 +220,19 @@ router.post("/:taskId/edit", passport.authenticate("session"), async (req: Reque
     const task: Task = (await Task.findAll({where:{id:req.params.taskId}}))[0];
 
     if (req.body.name.length > 255){
-        res.send("Your task name was way too long!");
+        req.flash(FlashMessageType.DANGER, "Your task name was too long!");
+        res.redirect(`/tasks/${task.id}/edit`);
         return;
     }
     if (req.body.description.length > 255){
-        res.send("Your task description was too long");
+        req.flash(FlashMessageType.DANGER, "Your task description was too long!");
+        res.redirect(`/tasks/${task.id}/edit`);
         return;
     }
     const convertedDate: Date = new Date(req.body.dueDate);
     if (convertedDate.toString() == "Invalid Date") {
-        res.send("Your date is invalid");
+        req.flash(FlashMessageType.DANGER, "Your task due date was invalid!");
+        res.redirect(`/tasks/${task.id}/edit`);
         return;
     }
     task.name = req.body.name;

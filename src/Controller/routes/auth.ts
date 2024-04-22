@@ -20,7 +20,6 @@ router.route("/register")
     })
     .post(async (req: Request, res: Response) => {
         if (req.body.password !== req.body.passwordCheck) {
-            // res.send("Passwords must match!");
             req.flash(FlashMessageType.DANGER, "Passwords must match!");
             res.redirect("/auth/register");
             return;

@@ -163,7 +163,9 @@ router.get("/users/:userId/delete", passport.authenticate("session"), async (req
     }))[0];
 
     if (userToDelete == null) {
-        res.send("unknown user");
+        req.flash(FlashMessageType.DANGER, "Unknown User");
+        res.redirect("/admin/");
+        return;
     }
 
     if (req.query.confirm == "true") {
