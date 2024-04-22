@@ -159,10 +159,6 @@ router.get("/users/:userId/delete", passport.authenticate("session"), async (req
         }
     }))[0];
 
-    if (req.user.id == userToDelete.id) {
-        req.flash(FlashMessageType.WARNING, "You are attempting to delete your own profile!");
-    }
-
     if (userToDelete == null) {
         res.send("unknown user");
     }
@@ -175,7 +171,11 @@ router.get("/users/:userId/delete", passport.authenticate("session"), async (req
             res.redirect("/admin/");
             return;
         }
-    } 
+    }
+
+    if (req.user.id == userToDelete.id) {
+        req.flash(FlashMessageType.WARNING, "You are attempting to delete your own profile!");
+    }
 
     res.render("admin/deleteuser", {
         messages: req.flash(),
@@ -202,14 +202,10 @@ router.get("/users/:userId/resetpassword", passport.authenticate("session"), asy
         }
     }))[0];
 
-    if (req.user.id == userToReset.id) {
-        req.flash(FlashMessageType.WARNING, "You are attempting to delete your own profile!");
-    }
-
     if (req.query.confirm == "true") {
         const result = await sendPasswordResetEmail(userToReset);
         if (result) {
-            req.flash(FlashMessageType.SUCCESS, "User has been a password reset email!");
+            req.flash(FlashMessageType.SUCCESS, "User has been sent a password reset email!");
             res.redirect("/admin/");
             return;
         } else {
@@ -217,7 +213,11 @@ router.get("/users/:userId/resetpassword", passport.authenticate("session"), asy
             res.redirect(`/admin/users/${userToReset.id}`);
             return;
         }
-    } 
+    }
+
+    if (req.user.id == userToReset.id) {
+        req.flash(FlashMessageType.WARNING, "You are attempting to reset your own password!");
+    }
 
     res.render("admin/resetUserPassword", {
         messages: req.flash(),
