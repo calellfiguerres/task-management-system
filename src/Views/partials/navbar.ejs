@@ -1,7 +1,9 @@
 <div id="page-container">
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(102, 0, 0);">
     <div class="container-fluid">
-        <a href="#" class="navbar-brand">Brand</a>
+        <a href="/" class="navbar-brand">
+            <img src="/static/jamal_time_logo.png" alt="Jamal Time Logo" width="30" height="30">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,23 +30,18 @@
                       Hello, <%= user.firstName %>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <!-- <li><a class="dropdown-item" href="#">Profile</a></li> -->
                         <li><a href="/tasks/" class="dropdown-item">Tasks</a></li>
                         <li><a href="/events/" class="dropdown-item">Events</a></li>
                         <% if (user.administrator) { %>
                             <li><hr class="dropdown-divider"></li>
                             <li><a href="/admin" class="dropdown-item">Admin Panel</a></li>
-                        <% } %>      
-                        <!-- <li><a class="dropdown-item" href="#">Another action</a></li> -->
+                        <% } %>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
                         </ul>
                 </div>
             <% } else { %>
                 <a href="/auth/login" class="navbar-text nav-link">Sign Up / Login</a>
-                <!-- <span class="navbar-text"> -->
-                <!-- </span> -->
-                <!-- <a href="/auth/login" class="nav-link">Login</a> -->
             <% } %>
         </div>
     </div>
