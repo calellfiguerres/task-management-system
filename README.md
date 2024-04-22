@@ -7,6 +7,9 @@ A system to manage one's tasks and events throughout the day.
 - Diana Rodriguez (`Diana-Rodriguez674`)
 
 # How to Build and Run
+## Install Dependencies
+- `npm install` - Installs all the dependencies for the app
+
 ## Run Application During Development
 - `npm run dev` - starts the backend using `nodemon` and runs the `index.ts`, listening to any changes in `.ts` and `.json` files
 
