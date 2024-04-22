@@ -23,7 +23,7 @@
           var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             events: <%- JSON.stringify(fullCalenderEvents) %>,
-            
+
 
           });
           calendar.render();
@@ -32,6 +32,8 @@
 </head>
 <body>
     <%- include("../partials/navbar"); %> <!-- you might need to change this too -->
+
+    <div class="mt-3"></div>
     
     <div id="calendar"></div>
 
